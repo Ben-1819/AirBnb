@@ -30,6 +30,11 @@
         </div>
 
         <div>
+            <x-input-label for="DOB" :value="__("DOB")" />
+            <input id="DOB" name="DOB" type="date" class="mt-1 block w-full" :value="old("DOB", $user->DOB)" required autofocus autocomplete="DOB"/>
+            <x-input-error class="mt-2" :messages="$errors->get('DOB')" />
+        </div>
+        <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />

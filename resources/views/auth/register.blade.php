@@ -16,6 +16,12 @@
             <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
         </div>
 
+        <!-- DOB -->
+        <div>
+            <x-input-label for="DOB" :value="__("DOB")"/>
+            <input id="DOB" name="DOB" type="date" class="mt-1 block w-full" :value="old("DOB")" required autofocus autocomplete="DOB"/>
+            <x-input-error :messages="$errors->get("DOB")" class="mt-2" />
+        </div>
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
