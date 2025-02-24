@@ -6,6 +6,8 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,5 +29,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RoleSeeder::class);
         $this->call(PermissionSeeder::class);
+        $host = Role::findByName("host");
+        $host->givePermissionTo(["addProperty", "viewProperty", "editProperty", "deleteProperty"]);
+        $consumer = Role::findByName("consumer");
+        $consumer->givePermissionTo("viewProperty");
+
     }
 }
