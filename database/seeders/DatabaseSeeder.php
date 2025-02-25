@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AmenitySeeder::class);
         $host = Role::findByName("host");
         $host->givePermissionTo(["addProperty", "viewProperty", "editProperty", "deleteProperty"]);
-        $consumer = Role::findByName("consumer");
+        $consumer = Role::findByName("customer");
         $consumer->givePermissionTo("viewProperty");
 
     }

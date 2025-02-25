@@ -23,9 +23,9 @@ return new class extends Migration
             $table->integer("number_of_bedrooms");
             $table->integer("number_of_bathrooms");
             $table->string("description");
-            $table->integer("number_of_reviews");
-            $table->double("avg_rating");
-            $table->integer("number_times_booked");
+            $table->integer("number_of_reviews")->default(0);
+            $table->double("avg_rating")->default(0);
+            $table->integer("number_times_booked")->default(0);
             $table->boolean("pets_allowed");
             $table->integer("max_pets");
             $table->string("price_per_pet");
