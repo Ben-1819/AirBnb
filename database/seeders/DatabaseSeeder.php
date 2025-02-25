@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RoleSeeder::class);
         $this->call(PermissionSeeder::class);
+        $this->call(AmenitySeeder::class);
         $host = Role::findByName("host");
         $host->givePermissionTo(["addProperty", "viewProperty", "editProperty", "deleteProperty"]);
         $consumer = Role::findByName("consumer");
