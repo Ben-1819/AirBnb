@@ -23,7 +23,7 @@
             <x-input-error :messages="$errors->get("DOB")" class="mt-2" />
         </div>
 
-<!-- Account Type -->
+        <!-- Account Type -->
         <div class="mt-4">
             <x-input-label for="role" :value="__("role")"/>
             <select class="border-red-300 focus:border-red-500 focus:ring-red-500 rounded-md shadow-sm" name="account_type">
