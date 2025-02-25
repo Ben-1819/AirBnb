@@ -20,6 +20,9 @@ class Property extends Model
         "number_of_reviews",
         "avg_rating",
         "number_times_booked",
+        "pets_allowed",
+        "max_pets",
+        "price_per_pet",
         "price_per_night"
     ];
 }
