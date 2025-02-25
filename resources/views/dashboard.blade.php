@@ -1,4 +1,4 @@
-<x-air-layout>
+<x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-red-800 leading-tight">
             {{ __('Dashboard') }}
@@ -17,4 +17,4 @@
     <div>
         <a href="{{route("profile.show")}}">Show Profile</a>
     </div>
-</x-air-layout>
+</x-app-layout>

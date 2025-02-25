@@ -1,3 +1,3 @@
-<x-mine-layout>
+<x-app-layout>
 
-</x-mine-layout>
+</x-app-layout>
