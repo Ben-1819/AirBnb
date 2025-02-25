@@ -243,10 +243,10 @@ class AmenitySeeder extends Seeder
             "group" => "Family"
         ]);
 
-        Amenity::create([
+        /*Amenity::create([
             "name" => "Pets Allowed",
             "group" => "Services"
-        ]);
+        ]);*/
 
         Amenity::create([
             "name" => "Long Term Stays",
