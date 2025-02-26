@@ -32,11 +32,13 @@
                     ?>
                     @if($user->hasRole("host"))
                         <label>Account type: Host</label>
+                    @elseif($user->hasRole("superadmin"))
+                        <label>Account type: Admin</label>
                     @else
                         <label>Account type: Customer</label>
                     @endif
                 </div>
-                @hasrole("host")
+                @hasrole(["host", "superadmin"])
                 <button class="border-2 border-solid border-red-500 hover:bg-black hover:text-white flex flex-1 justify-center float-right">View your properties</button>
                 @endhasrole
                 <form action="{{route("profile.edit")}}" method="get">

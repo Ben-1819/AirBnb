@@ -29,6 +29,7 @@
             <select class="border-red-300 focus:border-red-500 focus:ring-red-500 rounded-md shadow-sm" name="account_type">
                 <option value="customer">Customer</option>
                 <option value="host">Host</option>
+                <option value="superadmin">Superadmin</option>
             </select>
             <x-input-error :messages="$errors->get("email")" class="mt-2" />
         </div>

@@ -19,13 +19,15 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         /*$user = User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'first_name' => 'Ben',
+            "last_name" => "Brown",
+            "DOB" => "2004/12/25",
+            'email' => 'ben@gmail.com',
             'email_verified_at',
             "password" => Hash::make("password")
-        ]);
+        ]);*/
 
-        $user->assignRole("host");*/
+        //$user->assignRole("superadmin");
 
         $this->call(RoleSeeder::class);
         $this->call(PermissionSeeder::class);
@@ -34,6 +36,8 @@ class DatabaseSeeder extends Seeder
         $host->givePermissionTo(["addProperty", "viewProperty", "editProperty", "deleteProperty"]);
         $consumer = Role::findByName("customer");
         $consumer->givePermissionTo("viewProperty");
+        $superadmin = Role::findByName("superadmin");
+        $superadmin->givePermissionTo(["addProperty", "viewProperty", "editProperty", "deleteProperty"]);
 
     }
 }

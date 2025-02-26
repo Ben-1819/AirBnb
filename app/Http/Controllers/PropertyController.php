@@ -104,8 +104,9 @@ class PropertyController extends Controller
     {
         log::info("Finding the property that has an ID that matches the parameters passed");
         $property = Property::find($id);
+        $user = request()->user();
         log::info("Stop the user from accessing the edit form if they are not the one who owns the property");
-        if($property->owner_id !== request()->user()->id){
+        if($property->owner_id !== request()->user()->id || $user->withoutRole('superadmin')){
             log::info("Returning error code 403");
             abort(403);
         }
@@ -119,7 +120,8 @@ class PropertyController extends Controller
     public function update(Request $request, Property $property)
     {
         log::info("Stop the user from updating the property if they are not the one who owns the property");
-        if($property->owner_id !== request()->user()->id){
+        $user = request()->user();
+        if($property->owner_id !== request()->user()->id || $user->withoutRole('superadmin')){
             log::info("Return error code 403");
             abort(403);
         }
@@ -184,7 +186,8 @@ class PropertyController extends Controller
         log::info("Stop user from deleting the property if they are not the owner of the property");
         log::info("Set property variable");
         $property::find($id);
-        if($property->owner_id !== request()->user()->id){
+        $user = request()->user();
+        if($property->owner_id !== $user->id || $user->withoutRole('superadmin')){
             log::info("Return error code 403");
             abort(403);
         }

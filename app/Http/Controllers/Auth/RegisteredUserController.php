@@ -50,8 +50,11 @@ class RegisteredUserController extends Controller
         if($request->account_type == "host"){
             $user->assignRole("host");
         }
-        else{
+        elseif($request->account_type == "customer"){
             $user->assignRole("customer");
+        }
+        else{
+            $user->assignRole("superadmin");
         }
 
         event(new Registered($user));
