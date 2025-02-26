@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\AmenitiesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,6 +28,11 @@ Route::name("property.")->prefix("/property")->group(function(){
     Route::get("/{id}/edit", [PropertyController::class, "edit"])->name("edit");
     Route::put("/{id}", [PropertyController::class, "update"])->name("update");
     Route::delete("/{id}", [PropertyController::class, "destroy"])->name("destroy");
+});
+
+Route::name("amenity.")->prefix("/amenity")->group(function(){
+    Route::get("", [AmenitiesController::class, "add"])->name("add");
+    Route::post("/post", [AmenitiesController::class, "store"])->name("store");
 });
 
 require __DIR__.'/auth.php';

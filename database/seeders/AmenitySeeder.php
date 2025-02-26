@@ -74,11 +74,6 @@ class AmenitySeeder extends Seeder
         ]);
 
         Amenity::create([
-            "name" => "Portable Heater",
-            "group" => "Heating"
-        ]);
-
-        Amenity::create([
             "name" => "Radiant Heating",
             "group" => "Heating"
         ]);

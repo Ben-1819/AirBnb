@@ -33,6 +33,7 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
+        log::info("Define data validation");
         $request->validate([
             "location" => ["required", "string"],
             "address" => ["required", "string"],
@@ -43,7 +44,7 @@ class PropertyController extends Controller
             "number_of_bedrooms" => ["required", "integer"],
             "number_of_bathrooms" => ["required", "integer"],
             "description" => ["required", "string"],
-            "pets_allowed" => ["boolean"],
+            //"pets_allowed" => ["boolean"],
             "max_pets" => ["required", "integer"],
             "price_per_pet" => ["required", "string"],
             "price_per_night" => ["required", "string"]
@@ -61,7 +62,7 @@ class PropertyController extends Controller
             "number_of_bedrooms" => $request->number_of_bedrooms,
             "number_of_bathrooms" => $request->number_of_bathrooms,
             "description" => $request->description,
-            "pets_allowed" => $request->pets_allowed,
+            "pets_allowed" => $request->pets_allowed == 'on' ? 1:0,
             "max_pets" => $request->max_pets,
             "price_per_pet" => $request->price_per_pet,
             "price_per_night" => $request->price_per_night
@@ -80,10 +81,14 @@ class PropertyController extends Controller
         log::info("Number of Bathrooms: {number_of_bathrooms}", ["number_of_bathrooms" => $request->number_of_bathrooms]);
         log::info("Description: {description}", ["description" => $request->description]);
         log::info("Pets allowed: {pets_allowed}", ["pets_allowed" => $request->pets_allowed]);
-        log::info("Price per Pet: {price_per_pet}". ["price_per_pet" => $request->price_per_pet]);
+        log::info("Price per Pet: {{$request->price_per_pet}}");
         log::info("Price per Night: {price_per_night}", ["price_per_night" => $request->price_per_night]);
 
         log::info("Redirecting to the amenities selection view");
+        //$property = Property::latest();
+        //$propertyID = $property->id;
+
+        return redirect()->route("amenity.add");
     }
 
     /**
