@@ -15,7 +15,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 @haspermission("addProperty")
-                <button class="border-2 border-solid border-red-500 hover:bg-black hover:text-white flex flex-1 justify-center float-right">Add new property</button>
+                <form action="{{route("property.create")}}" method="get">
+                    <button class="border-2 border-solid border-red-500 hover:bg-black hover:text-white flex flex-1 justify-center float-right">Add new property</button>
+                </form>
                 @endhaspermission
                 <div class="max-w-xl">
                     <label>First name: {{$user->first_name}}</label>
@@ -39,7 +41,12 @@
                     @endif
                 </div>
                 @hasrole(["host", "superadmin"])
-                <button class="border-2 border-solid border-red-500 hover:bg-black hover:text-white flex flex-1 justify-center float-right">View your properties</button>
+                <form>
+                    <button class="border-2 border-solid border-red-500 hover:bg-black hover:text-white flex flex-1 justify-center float-right">
+                        View your properties
+                    </button>
+                </form>
+
                 @endhasrole
                 <form action="{{route("profile.edit")}}" method="get">
                     @csrf

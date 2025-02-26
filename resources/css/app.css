@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.index-table, th, td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-top: 25px;
+    margin-left: 500px;
+}
