@@ -102,6 +102,12 @@ class PropertyController extends Controller
         return view("property.show", compact("property"));
     }
 
+    public function usersProperties(){
+        log::info("Get all properties that are owned by the user");
+        $users_properties = Property::where("owner_id", request()->user()->id)->get();
+        log::info("Returning to properties.owned and passing users_properties into the view");
+        return view("property.owned", compact("users_properties"));
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -180,7 +186,8 @@ class PropertyController extends Controller
         log::info("Price per Pet: {price_per_pet}". ["price_per_pet" => $request->price_per_pet]);
         log::info("Price per Night: {price_per_night}", ["price_per_night" => $request->price_per_night]);
 
-        log::info("Redirecting to the amenities update choice view");
+        log::info("Redirecting to the property.owned view");
+        return redirect()->route("property.owned");
     }
 
     /**

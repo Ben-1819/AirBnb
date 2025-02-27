@@ -41,7 +41,8 @@
                     @endif
                 </div>
                 @hasrole(["host", "superadmin"])
-                <form>
+                <form action="{{route("property.owned")}}" method="get">
+                    @csrf
                     <button class="border-2 border-solid border-red-500 hover:bg-black hover:text-white flex flex-1 justify-center float-right">
                         View your properties
                     </button>
