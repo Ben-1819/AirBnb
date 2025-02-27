@@ -24,6 +24,7 @@ Route::name("property.")->prefix("/property")->group(function(){
     Route::get("", [PropertyController::class, "index"])->name("index");
     Route::get("/create", [PropertyController::class, "create"])->name("create");
     Route::post("", [PropertyController::class, "store"])->name("store");
+    Route::get("/owned", [PropertyController::class, "usersProperties"])->name("owned");
     Route::get("/{id}", [PropertyController::class, "show"])->name("show");
     Route::get("/{id}/edit", [PropertyController::class, "edit"])->name("edit");
     Route::put("/{id}", [PropertyController::class, "update"])->name("update");
@@ -33,6 +34,11 @@ Route::name("property.")->prefix("/property")->group(function(){
 Route::name("amenity.")->prefix("/amenity")->group(function(){
     Route::get("", [AmenitiesController::class, "add"])->name("add");
     Route::post("", [AmenitiesController::class, "store"])->name("store");
+    Route::get("/{id}/edit", [AmenitiesController::class, "edit"])->name("edit");
+    Route::post("/edit", [AmenitiesController::class, "update"])->name("update");
+    Route::delete("/{id}", [AmenitiesController::class, "destroyAll"])->name("destroyAll");
+    Route::get("/{id}/list", [AmenitiesController::class, "list"])->name("list");
+    Route::delete("/{id}/delete", [AmenitiesController::class, "delete"])->name("destroy");
 });
 
 require __DIR__.'/auth.php';
