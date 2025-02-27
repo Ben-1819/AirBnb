@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 class AmenitiesController extends Controller
 {
-    public function add(Property $property){
+    public function add(){
         //log::info("Pass the id of the property you are setting the amenities for into the add amenities view");
         log::info("Returning the amenity.add view");
         //$property = Property::where("id", $property->id);
@@ -19,25 +19,25 @@ class AmenitiesController extends Controller
     }
 
     public function store(Request $request){
+        $checkedAmenities = $request->input('checkedAmenities');
         log::info("Find most recently added property");
-        $property = Property::latest();
-        log::info("Set property id to: {id}", ["id" => $property->id]);
-        $property_id = $property->id;
+        $property = Property::latest()->first();
+        log::info("Set property id to: {$property->id}");
         log::info("Create array to insert into the join table");
-        $myAmenities = array();
+        $myAmenities = [];
 
         log::info("Do foreach loop on the values that you passed into the controller");
-        $selectedAmenities = $request->all();
-        foreach($selectedAmenities as $amenity){
-            $amenityID = Amenity::where("name", $amenity);
-            DB::table("property_amenities")->insert([
-                "property_id" => $property_id,
-                "amenity_id" => $amenityID->id,
+        foreach((array)$checkedAmenities as $amenity){
+            log::info("Current amenity being added: " . $amenity);
+            $amenityID = Amenity::where("name", $amenity)->value("id");
+            $amenity = new PropertyAmenity([
+                "property_id" => $property->id,
+                "amenity_id" => $amenityID,
             ]);
-            //array_push($myAmenities, ["property_id" => $property_id, "amenity_id" => $amenityID->id]);
+            $amenity->save();
+            log::info("Amenity '{$amenity}' saved for property ID: {$property->id}");
         }
 
-        //log::info("Save the array to your database table");
-        //DB::table("property_amenities")->insert($myAmenities);
+        return redirect()->route("property.index");
     }
 }

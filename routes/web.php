@@ -32,7 +32,7 @@ Route::name("property.")->prefix("/property")->group(function(){
 
 Route::name("amenity.")->prefix("/amenity")->group(function(){
     Route::get("", [AmenitiesController::class, "add"])->name("add");
-    Route::post("/post", [AmenitiesController::class, "store"])->name("store");
+    Route::post("", [AmenitiesController::class, "store"])->name("store");
 });
 
 require __DIR__.'/auth.php';
