@@ -15,7 +15,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased" >
         <div class="min-h-screen bg-white">
             @include('layouts.navigation')
 
@@ -29,7 +29,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <main id="app">
                 {{ $slot }}
             </main>
         </div>

@@ -1,15 +1,28 @@
 <!DOCTYPE html>
-@vite("resources/js/getChecked.js")
+@vite("resources/js/app.js")
+<!--<script setup>
+    new Vue({
+        el: '#checkboxes'
+    });
+    import { ref } from 'vue'
+    const checkedAmenities = ref([])
+</script>-->
     <x-app-layout>
         <div>
             <h1 class="flex justify-center text-2xl">Add Amenities</h1>
+
         </div>
-        <form>
-            <div id="checkboxes">
+
+            <div id="app">
+                <amenity-boxes/>
+            </div>
+
+
+            <!--<div id="checkboxes">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <h2 class="text-xl">Bathroom</h2>
                     <label for="hairdryer">Hairdryer: </label>
-                    <input type="checkbox" id="hairdryer" name="hairdryer" value="Hairdryer">
+                    <input type="checkbox" id="hairdryer" name="hairdryer" value="Hairdryer" v-model="checkedAmenities">
                     <label for="cleaning_products">Cleaning Products</label>
                     <input type="checkbox" id="cleaning_products" name="cleaning_products" value="Cleaning Products">
                     <label for="hot_water">Hot Water</label>
@@ -149,10 +162,8 @@
                     <label for="wifi">Wifi</label>
                     <input type="checkbox" id="wifi" name="wifi" value="Wifi">
                 </div>
-            </div>
+            </div>-->
 
-            <button>Save amenities</button>
-        </form>
     </x-app-layout>
 </html>
 
