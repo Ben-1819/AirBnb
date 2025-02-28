@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("property_id")->contrained("properties");
             $table->foreignId("reviewer_id")->constrained("users");
+            $table->string("review_title");
             $table->string("review_contents");
             $table->integer("rating");
             $table->timestamps();

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer("amount_of_guests");
             $table->integer("amount_of_pets")->nullable();
             $table->string("extra_charges");
+            $table->string("booking_cost");
             $table->date("booking_start");
             $table->date("booking_end");
             $table->timestamps();
