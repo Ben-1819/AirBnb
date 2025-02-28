@@ -64,11 +64,6 @@ class AmenitiesController extends Controller
         $id = $request->input('id');
         intval($id);
         $property = Property::where("id", $id)->first();
-        //log::info("Find most recently added property");
-        //$property = Property::latest()->first();
-        //log::info("Set property id to: {$property->id}");
-        //log::info("Create array to insert into the join table");
-        //log::info("Property id: {$id}");
         log::info("Do foreach loop on the values that you passed into the controller");
         foreach((array)$checkedAmenities as $amenity){
             log::info("Current amenity being added: " . $amenity);
@@ -78,7 +73,6 @@ class AmenitiesController extends Controller
                 "amenity_id" => $amenityID,
             ]);
             $amenity->save();
-            //log::info("Amenity '{$amenity}' saved for property ID: {$id}");
         }
 
         return redirect()->route("property.index");
