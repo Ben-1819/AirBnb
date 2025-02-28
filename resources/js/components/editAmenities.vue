@@ -6,11 +6,9 @@ const checkedAmenities = ref([]);
 const id = defineProps({
     id: Number
 })
-//const theid = [props[id]];
-//props:['id'];
-//const url = `/amenity/${id}`;
+
 const editAmenities = () => {
-    alert("button clicked");
+    console.log("Button Clicked");
     console.log(id)
     axios.post("/amenity/edit", { checkedAmenities: checkedAmenities.value, id: id }, {
         headers: {

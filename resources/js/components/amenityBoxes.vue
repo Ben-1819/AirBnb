@@ -5,7 +5,7 @@ import axios from 'axios';
 const checkedAmenities = ref([]);
 
 const sendToController = () => {
-    alert("button clicked");
+    console.log("Button Clicked");
     axios.post('/amenity', { checkedAmenities: checkedAmenities.value }, {
         headers: {
         'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
