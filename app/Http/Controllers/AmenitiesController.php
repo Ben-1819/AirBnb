@@ -30,12 +30,12 @@ class AmenitiesController extends Controller
         foreach((array)$checkedAmenities as $amenity){
             log::info("Current amenity being added: " . $amenity);
             $amenityID = Amenity::where("name", $amenity)->value("id");
-            $amenity = new PropertyAmenity([
+            $amenityAdd = new PropertyAmenity([
                 "property_id" => $property->id,
                 "amenity_id" => $amenityID,
             ]);
-            $amenity->save();
-            log::info("Amenity '{$amenity}' saved for property ID: {$property->id}");
+            $amenityAdd->save();
+            log::info("Amenity {$amenity->name} saved for property ID: {$property->id}");
         }
 
         return redirect()->route("property.index");
@@ -68,13 +68,14 @@ class AmenitiesController extends Controller
         foreach((array)$checkedAmenities as $amenity){
             log::info("Current amenity being added: " . $amenity);
             $amenityID = Amenity::where("name", $amenity)->value("id");
-            $amenity = new PropertyAmenity([
+            $amenityAdd = new PropertyAmenity([
                 "property_id" => $property->id,
                 "amenity_id" => $amenityID,
             ]);
-            $amenity->save();
+            $amenityAdd->save();
+            log::info("Amenity {$amenity->name} saved for property ID: {$property->id}");
         }
-
+        log::info("I reached line 78");
         return redirect()->route("property.index");
     }
 
