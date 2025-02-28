@@ -31,8 +31,7 @@ Route::name("property.")->prefix("/property")->group(function(){
     Route::get("/{id}/edit", [PropertyController::class, "edit"])->name("edit")->middleware(['auth', 'verified']);
     Route::put("/{id}", [PropertyController::class, "update"])->name("update")->middleware(['auth', 'verified']);
     Route::delete("/{id}", [PropertyController::class, "destroy"])->name("destroy")->middleware(['auth', 'verified']);
-    Route::patch("{/{id}/addReview", [PropertyController::class, "addReview"])->name("addReview");
-    Route::patch("/{id}/getAverage", [PropertyController::class, "averageRating"])->name("averageRatin");
+    Route::patch("{/{id}/addReview", [PropertyController::class, "addReview"])->name("addReview")->middleware(['auth', 'verified']);
 });
 
 Route::name("amenity.")->prefix("/amenity")->group(function(){

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Property;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -207,5 +208,21 @@ class PropertyController extends Controller
         Property::where("id", $id)->delete();
         log::info("Property deleted, returning to the property index");
         return redirect()->route("property.index");
+    }
+
+    public function addReview($id){
+        $property = Property::find($id);
+        $total = 0;
+        $review = Review::where("property_id", $property->id)->get();
+        $amount = count($review);
+        for($i=0; $i < $amount; $i++){
+            $total += $review->rating;
+        }
+        $average = $total / $amount;
+        $update_property = Property::where("id", $id)->update([
+            "number_of_reviews" => $property->number_of_reviews += 1,
+            "average_rating" => $average,
+        ]);
+        return redirect()->route("dashboard");
     }
 }
