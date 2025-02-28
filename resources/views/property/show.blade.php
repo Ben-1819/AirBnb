@@ -6,6 +6,10 @@ use App\Models\User;
 <!DOCTYPE html>
 <x-app-layout>
     <div>
+        <form action="{{route("booking.create", $property->id)}}" method="get">
+            @csrf
+            <button class="border-2 border-solid border-red-500 float justify-center float-right">Make a booking</button>
+        </form>
         <table class="table-index">
             <thead>
                 <tr>
@@ -47,98 +51,98 @@ use App\Models\User;
         <h2 class="text-xl">Bathroom</h2>
         @if(count($amenitiesBathroom) > 0)
             @foreach($amenitiesBathroom as $amenityBathroom)
-                <p>{{$amenityBathroom->name}}</p>
+                <label>{{$amenityBathroom->name}}, </label>
             @endforeach
         @else
-            <p>No bathroom amenities</p>
+            <label>No bathroom amenities</label>
         @endif
         <h2 class="text-xl">Laundry</h2>
         @if(count($amenitiesLaundry) > 0)
             @foreach($amenitiesLaundry as $amenityLaundry)
-                <p>{{$amenityLaundry->name}}</p>
+                <label>{{$amenityLaundry->name}}, </label>
             @endforeach
         @else
-            <p>No laundry amenities</p>
+            <label>No laundry amenities</label>
         @endif
         <h2 class="text-xl">Heating</h2>
         @if(count($amenitiesHeating) > 0)
             @foreach($amenitiesHeating as $amenityHeating)
-                <p>{{$amenityHeating->name}}</p>
+                <label>{{$amenityHeating->name}}, </label>
             @endforeach
         @else
-            <p>No Heating amenities</p>
+            <label>No Heating amenities</label>
         @endif
         <h2 class="text-xl">Security</h2>
         @if(count($amenitiesSecurity) > 0)
             @foreach($amenitiesSecurity as $amenitySecurity)
-                <p>{{$amenitySecurity->name}}</p>
+                <label>{{$amenitySecurity->name}}, </label>
             @endforeach
         @else
-            <p>No Security amenities</p>
+            <label>No Security amenities</label>
         @endif
-        <h2 class="text-xl">Kitchen</p>
+        <h2 class="text-xl">Kitchen</h2>
         @if(count($amenitiesKitchen) > 0)
             @foreach($amenitiesKitchen as $amenityKitchen)
-                <p>{{$amenityKitchen->name}}</p>
+                <label>{{$amenityKitchen->name}}, </label>
             @endforeach
         @else
-            <p>No Kitchen amenities</p>
+            <label>No Kitchen amenities</label>
         @endif
-        <h2 class="text-xl">Outdoor</p>
+        <h2 class="text-xl">Outdoor</h2>
         @if(count($amenitiesOutdoor) > 0)
             @foreach($amenitiesOutdoor as $amenityOutdoor)
-                <p>{{$amenityOutdoor->name}}</p>
+                <label>{{$amenityOutdoor->name}}, </label>
             @endforeach
         @else
-            <p>No Outdoor amenities</p>
+            <label>No Outdoor amenities</label>
         @endif
-        <h2 class="text-xl">Views</p>
+        <h2 class="text-xl">Views</h2>
         @if(count($amenitiesView) > 0)
             @foreach($amenitiesView as $amenityView)
-                <p>{{$amenityView->name}}</p>
+                <label>{{$amenityView->name}}, </label>
             @endforeach
         @else
-            <p>No View amenities</p>
+            <label>No View amenities</label>
         @endif
-        <h2 class="text-xl">Facilities</p>
+        <h2 class="text-xl">Facilities</h2>
         @if(count($amenitiesFacilities) > 0)
             @foreach($amenitiesFacilities as $amenityFacilities)
-                <p>{{$amenityFacilities->name}}</p>
+                <label>{{$amenityFacilities->name}}, </label>
             @endforeach
         @else
-            <p>No Facilities amenities</p>
+            <label>No Facilities amenities</label>
         @endif
-        <h2 class="text-xl">Family</p>
+        <h2 class="text-xl">Family</h2>
         @if(count($amenitiesFamily) > 0)
             @foreach($amenitiesFamily as $amenityFamily)
-                <p>{{$amenityFamily->name}}</p>
+                <label>{{$amenityFamily->name}}, </label>
             @endforeach
         @else
-            <p>No Family amenities</p>
+            <label>No Family amenities</label>
         @endif
         <h2 class="text-xl">Services</h2>
         @if(count($amenitiesServices) > 0)
             @foreach($amenitiesServices as $amenityServices)
-                <p>{{$amenityServices->name}}</p>
+                <label>{{$amenityServices->name}}, </label>
             @endforeach
         @else
-            <p>No Services amenities</p>
+            <label>No Services amenities</label>
         @endif
         <h2 class="text-xl">Entertainment</h2>
         @if(count($amenitiesEntertainment) > 0)
             @foreach($amenitiesEntertainment as $amenityEntertainment)
-                <p>{{$amenityEntertainment->name}}</p>
+                <label>{{$amenityEntertainment->name}}, </label>
             @endforeach
         @else
-            <p>No Entertainment amenities</p>
+            <label>No Entertainment amenities</label>
         @endif
         <h2 class="text-xl">Internet</h2>
         @if(count($amenitiesInternet) > 0)
             @foreach($amenitiesInternet as $amenityInternet)
-                <p>{{$amenityInternet->name}}</p>
+                <label>{{$amenityInternet->name}}, </label>
             @endforeach
         @else
-            <p>No Internet amenities</p>
+            <label>No Internet amenities</label>
         @endif
     <div>
 
