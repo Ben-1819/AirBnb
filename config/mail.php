@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'postmark'),
+    'default' => env('MAIL_MAILER', 'mailgun'),
 
     /*
     |--------------------------------------------------------------------------
@@ -93,6 +93,10 @@ return [
                 'ses',
                 'postmark',
             ],
+        ],
+
+        "mailgun" => [
+            "transport" => "mailgun",
         ],
 
     ],
