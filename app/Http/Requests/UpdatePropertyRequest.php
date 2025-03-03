@@ -3,18 +3,28 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\log;
+use Illuminate\Http\Request;
+
 
 class UpdatePropertyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(Request $request): bool
     {
-        if(request()->user()->can("editProperty")){
+        log::info("Check if the current user is the owner of the property or is a superadmin");
+        if(request()->user()->id == $request->owner_id){
+            log::info("Current user is the owner of the property, allow them to update it");
+            return true;
+        }
+        elseif(request()->user()->hasRole("superadmin")){
+            log::info("Current user has the superadmin role, allow them to update the property");
             return true;
         }
         else{
+            log::info("User does not have the editProperty permission, they are not authorised to update the property");
             return false;
         }
 
@@ -27,6 +37,7 @@ class UpdatePropertyRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Define the validation rules
         return [
             "location" => ["required", "string", "max:25"],
             "address" => ["required", "string", "max:100"],
@@ -46,7 +57,7 @@ class UpdatePropertyRequest extends FormRequest
 
     public function messages(): array
     {
-
+        // Create custom error messages
         $messages = [
             "location.required" => "Location is a required field",
             "location.string" => "Location must be of data type string",
@@ -87,7 +98,7 @@ class UpdatePropertyRequest extends FormRequest
             "price_per_night.max" => "Price per night cannot be more than 5 digits",
             "price_pet_night.min" => "Price per night cannot be less than 1 digit",
         ];
-
+        // Return the custom error messages
         return $messages;
 
     }

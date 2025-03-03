@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Traits\HasPermissions;
+use Illuminate\Support\Facades\Log;
 
 class StorePropertyRequest extends FormRequest
 {
@@ -13,10 +14,13 @@ class StorePropertyRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        log::info("Check if the current user has the addProperty permission");
         if(request()->user()->can("addProperty")){
+            log::info("The current user has the addProperty permission, allow them to create a property");
             return true;
         }
         else{
+            log::info("Current user does not have the addProperty permission, they are not authorised to create a property");
             return false;
         }
     }
@@ -28,6 +32,7 @@ class StorePropertyRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Define validation rules
         return [
             "location" => ["required", "string", "max:25"],
             "address" => ["required", "string", "max:100"],
@@ -48,7 +53,7 @@ class StorePropertyRequest extends FormRequest
 
     public function messages(): array
     {
-
+        // Create custom error messages
         $messages = [
             "location.required" => "Location is a required field",
             "location.string" => "Location must be of data type string",
@@ -89,7 +94,7 @@ class StorePropertyRequest extends FormRequest
             "price_per_night.max" => "Price per night cannot be more than 5 digits",
             "price_pet_night.min" => "Price per night cannot be less than 1 digit",
         ];
-
+        // Return custom error messages
         return $messages;
 
     }
