@@ -26,12 +26,12 @@ use App\Models\User;
                         <tr>
                             <td>{{$booking->id}}</td>
                             <?php
-                            $customer = User::where("id", $booking->customer_id)->get();
+                            $customer = User::find($booking->customer_id);
                             ?>
                             <td>{{$customer->first_name}} {{$customer->last_name}}</td>
                             <td>{{$booking->property_id}}</td>
                             <?php
-                            $owner = User::where("id", $booking->host_id)->get();
+                            $owner = User::find($booking->host_id);
                             ?>
                             <td>{{$owner->first_name}} {{$owner->last_name}}</td>
                             <td>{{$booking->booking_start}}</td>
