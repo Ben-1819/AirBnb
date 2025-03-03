@@ -7,6 +7,7 @@
                         @csrf
                         <div>
                             <h1 class="text-2xl flex justify-center">Edit your property</h1>
+                            <input type="hidden" name="owner_id" value={{$property->owner_id}}>
                         </div>
                         <div class="row row-space mb-3">
                             <div class="col-6">
