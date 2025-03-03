@@ -35,7 +35,7 @@ class AmenitiesController extends Controller
                 "amenity_id" => $amenityID,
             ]);
             $amenityAdd->save();
-            log::info("Amenity {$amenity->name} saved for property ID: {$property->id}");
+            log::info("Amenity ". $amenity." saved for property ID: {$property->id}");
         }
 
         return redirect()->route("property.index");
