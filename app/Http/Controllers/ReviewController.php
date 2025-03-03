@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreReviewRequest;
+use App\Http\Requests\UpdateReviewRequest;
 use App\Models\Review;
 use App\Models\Property;
 use Illuminate\Http\Request;
@@ -36,15 +38,10 @@ class ReviewController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreReviewRequest $request)
     {
         log::info("Validating User Input");
-        $request->validate([
-            "property_id" => ["required", "integer"],
-            "review_title" => ["required", "string"],
-            "review_contents" => ["required", "string"],
-            "rating" => ["required", "integer", "min:1", "max:5"],
-        ]);
+        $request->validated();
 
         log::info("setting property variable");
         $property = Property::find($request->property_id);
@@ -93,14 +90,10 @@ class ReviewController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Review $review)
+    public function update(UpdateReviewRequest $request, Review $review)
     {
         log::info("Validate the users input");
-        $request->validate([
-            "review_title" => ["required", "string"],
-            "review_contents" => ["required", "string"],
-            "rating" => ["required", "integer", "min:1", "max:5"],
-        ]);
+        $request->validated();
 
         log::info("Update the record in the reviews table");
         $update_review = Review::where("id", $review->id)->update([
