@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePropertyRequest;
+use App\Http\Requests\UpdatePropertyRequest;
 use App\Models\Property;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -32,24 +34,10 @@ class PropertyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePropertyRequest $request)
     {
-        log::info("Define data validation");
-        $request->validate([
-            "location" => ["required", "string"],
-            "address" => ["required", "string"],
-            "main_category" => ["required", "string"],
-            "sub_category1" => ["required", "string"],
-            "sub_category2" => ["required", "string"],
-            "max_guests" => ["required", "integer"],
-            "number_of_bedrooms" => ["required", "integer"],
-            "number_of_bathrooms" => ["required", "integer"],
-            "description" => ["required", "string"],
-            //"pets_allowed" => ["boolean"],
-            "max_pets" => ["required", "integer"],
-            "price_per_pet" => ["required", "string"],
-            "price_per_night" => ["required", "string"]
-        ]);
+        log::info("Retrieve validated input data");
+        $request->validated();
 
         log::info("Insert a new record into the properties table");
         $property = new Property([
@@ -129,34 +117,26 @@ class PropertyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Property $property)
+    public function update(UpdatePropertyRequest $request, Property $property)
     {
         log::info("Stop the user from updating the property if they are not the one who owns the property");
         $user = request()->user();
-        if($property->owner_id !== request()->user()->id || $user->withoutRole('superadmin')){
+        if($property->owner_id == request()->user()->id){
+            log::info("User updating the property is the property owner");
+        }
+        elseif($user->hasRole("superadmin")){
+            log::info("User updating the property is a superadmin");
+        }
+        else{
             log::info("Return error code 403");
             abort(403);
         }
 
-        $request->validate([
-            "location" => ["required", "string"],
-            "address" => ["required", "string"],
-            "main_category" => ["required", "string"],
-            "sub_category1" => ["required", "string"],
-            "sub_category2" => ["required", "string"],
-            "max_guests" => ["required", "integer"],
-            "number_of_bedrooms" => ["required", "integer"],
-            "number_of_bathrooms" => ["required", "integer"],
-            "description" => ["required", "string"],
-            "pets_allowed" => ["boolean"],
-            "max_pets" => ["required", "integer"],
-            "price_per_pet" => ["required", "string"],
-            "price_per_night" => ["required", "string"]
-        ]);
+        $request->validated();
 
         log::info("Update record in the properties table");
         $property = Property::where("id", $property->id)->update([
-            "owner_id" => $request->user()->id,
+            "owner_id" => $property->owner_id,
             "location" => $request->location,
             "address" => $request->address,
             "main_category" => $request->main_category,
@@ -196,14 +176,23 @@ class PropertyController extends Controller
      */
     public function destroy(Property $property, $id)
     {
-        log::info("Stop user from deleting the property if they are not the owner of the property");
+        log::info("Stop user from deleting the property if they are not the owner of the property or a superadmin");
         log::info("Set property variable");
         $property::find($id);
         $user = request()->user();
-        if($property->owner_id !== $user->id || $user->withoutRole('superadmin')){
-            log::info("Return error code 403");
+
+        if($property->owner_id == $user()->id){
+            log::info("User deleting the property is the owner of the property");
+        }
+        elseif($user()->hasRole("superadmin")){
+            log::info("User deleting the property is a superadmin");
+            log::info("ID of user deleting the property: ".$user->id);
+        }
+        else{
+            log::info("User is not authorised to delete the property, return error code 403");
             abort(403);
         }
+
         log::info("Deleting property with id: {id}", ["id" => $id]);
         Property::where("id", $id)->delete();
         log::info("Property deleted, returning to the property index");
