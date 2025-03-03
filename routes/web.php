@@ -31,7 +31,7 @@ Route::name("property.")->prefix("/property")->group(function(){
     Route::get("/{id}/edit", [PropertyController::class, "edit"])->name("edit")->middleware(['auth', 'verified']);
     Route::put("/{id}", [PropertyController::class, "update"])->name("update")->middleware(['auth', 'verified']);
     Route::delete("/{id}", [PropertyController::class, "destroy"])->name("destroy")->middleware(['auth', 'verified']);
-    Route::patch("{/{id}/addReview", [PropertyController::class, "addReview"])->name("addReview")->middleware(['auth', 'verified']);
+    Route::patch("/{id}/addReview", [PropertyController::class, "addReview"])->name("addReview")->middleware(['auth', 'verified']);
 });
 
 Route::name("amenity.")->prefix("/amenity")->group(function(){
@@ -56,7 +56,7 @@ Route::name("booking.")->prefix("/booking")->group(function(){
 
 Route::name("review.")->prefix("/review")->group(function(){
     Route::get("", [ReviewController::class, "index"])->name("index");
-    Route::get("/create", [ReviewController::class, "create"])->name("create");
+    Route::get("/{property}/create", [ReviewController::class, "create"])->name("create");
     Route::post("", [ReviewController::class, "store"])->name("store");
     Route::get("/{id}", [ReviewController::class, "show"])->name("show");
     Route::get("/{id}/edit", [ReviewController::class, "edit"])->name("edit");
