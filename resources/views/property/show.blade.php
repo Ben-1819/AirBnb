@@ -16,6 +16,8 @@ use App\Models\User;
                     <th>Property ID</th>
                     <th>Property Owner</th>
                     <th>Property Location</th>
+                    <th>Amount of Reviews</th>
+                    <th>Average Rating</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +28,8 @@ use App\Models\User;
                     ?>
                     <td>{{$owner->first_name}} {{$owner->last_name}}</td>
                     <td>{{$property->location}}</td>
+                    <td>{{$property->number_of_reviews}}</td>
+                    <td>{{$property->avg_rating}}</td>
                 </tr>
             </tbody>
         </table>
@@ -48,102 +52,147 @@ use App\Models\User;
         $amenitiesEntertainment = Amenity::whereIn("id", $amenity_ids)->where("group", "Entertainement")->get();
         $amenitiesInternet = Amenity::whereIn("id", $amenity_ids)->where("group", "Internet")->get();
         ?>
-        <h2 class="text-xl">Bathroom</h2>
-        @if(count($amenitiesBathroom) > 0)
-            @foreach($amenitiesBathroom as $amenityBathroom)
-                <label>{{$amenityBathroom->name}}, </label>
-            @endforeach
-        @else
-            <label>No bathroom amenities</label>
-        @endif
-        <h2 class="text-xl">Laundry</h2>
-        @if(count($amenitiesLaundry) > 0)
-            @foreach($amenitiesLaundry as $amenityLaundry)
-                <label>{{$amenityLaundry->name}}, </label>
-            @endforeach
-        @else
-            <label>No laundry amenities</label>
-        @endif
-        <h2 class="text-xl">Heating</h2>
-        @if(count($amenitiesHeating) > 0)
-            @foreach($amenitiesHeating as $amenityHeating)
-                <label>{{$amenityHeating->name}}, </label>
-            @endforeach
-        @else
-            <label>No Heating amenities</label>
-        @endif
-        <h2 class="text-xl">Security</h2>
-        @if(count($amenitiesSecurity) > 0)
-            @foreach($amenitiesSecurity as $amenitySecurity)
-                <label>{{$amenitySecurity->name}}, </label>
-            @endforeach
-        @else
-            <label>No Security amenities</label>
-        @endif
-        <h2 class="text-xl">Kitchen</h2>
-        @if(count($amenitiesKitchen) > 0)
-            @foreach($amenitiesKitchen as $amenityKitchen)
-                <label>{{$amenityKitchen->name}}, </label>
-            @endforeach
-        @else
-            <label>No Kitchen amenities</label>
-        @endif
-        <h2 class="text-xl">Outdoor</h2>
-        @if(count($amenitiesOutdoor) > 0)
-            @foreach($amenitiesOutdoor as $amenityOutdoor)
-                <label>{{$amenityOutdoor->name}}, </label>
-            @endforeach
-        @else
-            <label>No Outdoor amenities</label>
-        @endif
-        <h2 class="text-xl">Views</h2>
-        @if(count($amenitiesView) > 0)
-            @foreach($amenitiesView as $amenityView)
-                <label>{{$amenityView->name}}, </label>
-            @endforeach
-        @else
-            <label>No View amenities</label>
-        @endif
-        <h2 class="text-xl">Facilities</h2>
-        @if(count($amenitiesFacilities) > 0)
-            @foreach($amenitiesFacilities as $amenityFacilities)
-                <label>{{$amenityFacilities->name}}, </label>
-            @endforeach
-        @else
-            <label>No Facilities amenities</label>
-        @endif
-        <h2 class="text-xl">Family</h2>
-        @if(count($amenitiesFamily) > 0)
-            @foreach($amenitiesFamily as $amenityFamily)
-                <label>{{$amenityFamily->name}}, </label>
-            @endforeach
-        @else
-            <label>No Family amenities</label>
-        @endif
-        <h2 class="text-xl">Services</h2>
-        @if(count($amenitiesServices) > 0)
-            @foreach($amenitiesServices as $amenityServices)
-                <label>{{$amenityServices->name}}, </label>
-            @endforeach
-        @else
-            <label>No Services amenities</label>
-        @endif
-        <h2 class="text-xl">Entertainment</h2>
-        @if(count($amenitiesEntertainment) > 0)
-            @foreach($amenitiesEntertainment as $amenityEntertainment)
-                <label>{{$amenityEntertainment->name}}, </label>
-            @endforeach
-        @else
-            <label>No Entertainment amenities</label>
-        @endif
-        <h2 class="text-xl">Internet</h2>
-        @if(count($amenitiesInternet) > 0)
-            @foreach($amenitiesInternet as $amenityInternet)
-                <label>{{$amenityInternet->name}}, </label>
-            @endforeach
-        @else
-            <label>No Internet amenities</label>
-        @endif
+        <button type="button" id="bathroomButton" class="border-2 border-solid border-red-500 hover:bg-black hover:text-white">Bathroom</button>
+        <div id="bathroom">
+            <!--<h2 class="text-xl">Bathroom</h2>-->
+            @if(count($amenitiesBathroom) > 0)
+                @foreach($amenitiesBathroom as $amenityBathroom)
+                    <label>{{$amenityBathroom->name}}, </label>
+                @endforeach
+            @else
+                <label>No bathroom amenities</label>
+            @endif
+        </div>
+        <button id="laundryButton" class="border-2 border-solid border-red-500 hover:bg-black hover:text-white">Laundry</button>
+        <div id="laundry">
+            @if(count($amenitiesLaundry) > 0)
+                @foreach($amenitiesLaundry as $amenityLaundry)
+                    <label>{{$amenityLaundry->name}}, </label>
+                @endforeach
+            @else
+                <label>No laundry amenities</label>
+            @endif
+        </div>
+        <!--<h2 class="text-xl">Laundry</h2>-->
+        <button id="heatingButton" class="border-2 border-solid border-red-500 hover:bg-black hover:text-white">Heating</button>
+        <div id="heating">
+            @if(count($amenitiesHeating) > 0)
+                @foreach($amenitiesHeating as $amenityHeating)
+                    <label>{{$amenityHeating->name}}, </label>
+                @endforeach
+            @else
+                <label>No Heating amenities</label>
+            @endif
+        </div>
+        <!--<h2 class="text-xl">Heating</h2>-->
+
+        <!--<h2 class="text-xl">Security</h2>-->
+        <button id="securityButton" class="border-2 border-solid border-red-500 hover:bg-black hover:text-white">Security</button>
+        <div id="security">
+            @if(count($amenitiesSecurity) > 0)
+                @foreach($amenitiesSecurity as $amenitySecurity)
+                    <label>{{$amenitySecurity->name}}, </label>
+                @endforeach
+            @else
+                <label>No Security amenities</label>
+            @endif
+        </div>
+
+        <!--<h2 class="text-xl">Kitchen</h2>-->
+        <button id="kitchenButton" class="border-2 border-solid border-red-500 hover:bg-black hover:text-white">Kitchen</button>
+        <div id="kitchen">
+            @if(count($amenitiesKitchen) > 0)
+                @foreach($amenitiesKitchen as $amenityKitchen)
+                    <label>{{$amenityKitchen->name}}, </label>
+                @endforeach
+            @else
+                <label>No Kitchen amenities</label>
+            @endif
+        </div>
+
+        <!--<h2 class="text-xl">Outdoor</h2>-->
+        <button id="outdoorButton" class="border-2 border-solid border-red-500 hover:bg-black hover:text-white">Outdoor</button>
+        <div id="outdoor">
+            @if(count($amenitiesOutdoor) > 0)
+                @foreach($amenitiesOutdoor as $amenityOutdoor)
+                    <label>{{$amenityOutdoor->name}}, </label>
+                @endforeach
+            @else
+                <label>No Outdoor amenities</label>
+            @endif
+        </div>
+
+        <!--<h2 class="text-xl">Views</h2>-->
+        <button id="viewButton" class="border-2 border-solid border-red-500 hover:bg-black hover:text-white">View</button>
+        <div id="view">
+            @if(count($amenitiesView) > 0)
+                @foreach($amenitiesView as $amenityView)
+                    <label>{{$amenityView->name}}, </label>
+                @endforeach
+            @else
+                <label>No View amenities</label>
+            @endif
+        </div>
+
+        <!--<h2 class="text-xl">Facilities</h2>-->
+        <button id="facilitiesButton" class="border-2 border-solid border-red-500 hover:bg-black hover:text-white">Facilities</button>
+        <div id="facilities">
+            @if(count($amenitiesFacilities) > 0)
+                @foreach($amenitiesFacilities as $amenityFacilities)
+                    <label>{{$amenityFacilities->name}}, </label>
+                @endforeach
+            @else
+                <label>No Facilities amenities</label>
+            @endif
+        </div>
+
+        <!--<h2 class="text-xl">Family</h2>-->
+        <button id="familyButton" class="border-2 border-solid border-red-500 hover:bg-black hover:text-white">Family</button>
+        <div id="family">
+            @if(count($amenitiesFamily) > 0)
+                @foreach($amenitiesFamily as $amenityFamily)
+                    <label>{{$amenityFamily->name}}, </label>
+                @endforeach
+            @else
+                <label>No Family amenities</label>
+            @endif
+        </div>
+
+        <!--<h2 class="text-xl">Services</h2>-->
+        <button id="servicesButton" class="border-2 border-solid border-red-500 hover:bg-black hover:text-white">Services</button>
+        <div id="services">
+            @if(count($amenitiesServices) > 0)
+                @foreach($amenitiesServices as $amenityServices)
+                    <label>{{$amenityServices->name}}, </label>
+                @endforeach
+            @else
+                <label>No Services amenities</label>
+            @endif
+        </div>
+
+        <!--<h2 class="text-xl">Entertainment</h2>-->
+        <button id="entertainmentButton" class="border-2 border-solid border-red-500 hover:bg-black hover:text-white">Entertainment</button>
+        <div id="entertainment">
+            @if(count($amenitiesEntertainment) > 0)
+                @foreach($amenitiesEntertainment as $amenityEntertainment)
+                    <label>{{$amenityEntertainment->name}}, </label>
+                @endforeach
+            @else
+                <label>No Entertainment amenities</label>
+            @endif
+        </div>
+
+        <!--<h2 class="text-xl">Internet</h2>-->
+        <button id="internetButton" class="border-2 border-solid border-red-500 hover:bg-black hover:text-white">Internet</button>
+        <div id="internet">
+            @if(count($amenitiesInternet) > 0)
+                @foreach($amenitiesInternet as $amenityInternet)
+                    <label>{{$amenityInternet->name}}, </label>
+                @endforeach
+            @else
+                <label>No Internet amenities</label>
+            @endif
+        </div>
     <div>
 
     </div>

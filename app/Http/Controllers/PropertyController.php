@@ -210,19 +210,45 @@ class PropertyController extends Controller
         return redirect()->route("property.index");
     }
 
-    public function addReview($id){
+    public function addReview(Request $request, $id){
+        log::info("Validate the forms input fields");
+        $request->validate([
+            "review_id" => ["required", "integer"],
+        ]);
+
+        log::info("Get the record from the properties table with the same id as the one passed");
         $property = Property::find($id);
+
+        log::info("Set total to 0");
         $total = 0;
-        $review = Review::where("property_id", $property->id)->get();
-        $amount = count($review);
-        for($i=0; $i < $amount; $i++){
+
+        log::info("Get all reviews that have the same property id as the record retrievd from the properties table");
+        $reviews = Review::where("property_id", $property->id)->get();
+
+        log::info("Get the sum of the rating column for all records retrieved");
+        $rating = Review::where("property_id", $property->id)->sum("rating");
+
+        log::info("Create variable amount and count how many records were retrieved from the reviews table");
+        $amount = count($reviews);
+
+        log::info("Amount: {$amount}");
+        log::info("Total rating: {$rating}");
+
+        log::info("Loop through the reviews array and add the rating for each record to the total");
+        foreach($reviews as $review){
             $total += $review->rating;
         }
+
+        log::info("Get the average rating by dividing the total by the amount");
         $average = $total / $amount;
+
+        log::info("Update the property to have the correct amount of reviews and the correct average rating");
         $update_property = Property::where("id", $id)->update([
-            "number_of_reviews" => $property->number_of_reviews += 1,
-            "average_rating" => $average,
+            "number_of_reviews" => $amount,
+            "avg_rating" => $average,
         ]);
+
+        log::info("Return to the dashboard");
         return redirect()->route("dashboard");
     }
 }
