@@ -1,5 +1,6 @@
 <?php
 use App\Models\User;
+use App\Models\Property;
 use Carbon\Carbon;
 ?>
 <!DOCTYPE html>
@@ -18,9 +19,19 @@ use Carbon\Carbon;
         <?php
         $booking_cost = ($booking->booking_cost);
         $amount_of_nights = (Carbon::parse($booking->booking_start)->diffInDays(Carbon::parse($booking->booking_end)));
+        $property = Property::where("id", $booking->property_id)->get();
         ?>
         <p>Booking Cost: £{{$booking_cost}}</p>
         <p>Amount of nights: {{$amount_of_nights}}</p>
+    </div>
+
+    <div>
+        <form action="{{route("review.create", $property)}}" method="get">
+            @csrf
+            <button class="border-2 border-solid border-red-500">
+                Review this property
+            </button>
+        </form>
     </div>
 </x-app-layout>
 </html>
