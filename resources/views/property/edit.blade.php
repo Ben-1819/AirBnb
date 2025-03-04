@@ -5,8 +5,10 @@
                 <div class="col-xl-8 m-auto">
                     <form action="{{route("property.update", $property)}}" method="post">
                         @csrf
+                        @method("put")
                         <div>
                             <h1 class="text-2xl flex justify-center">Edit your property</h1>
+                            <input type="hidden" name="property_id" value={{$property->id}}>
                             <input type="hidden" name="owner_id" value={{$property->owner_id}}>
                         </div>
                         <div class="row row-space mb-3">
@@ -57,7 +59,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="main_category" class="text-xl">Main Category: </label>
-                                    <select name="main_category" id="main_category" class="border-2 border-solid border-red-500" default={{$property->main_category}}>
+                                    <select name="main_category" id="main_category" class="border-2 border-solid border-red-500" value={{$property->main_category}}>
                                         <option value="detatched">Detatched</option>
                                         <option value="semi-detatched">Semi-Detatched</option>
                                         <option value="flat">Flat</option>
@@ -76,7 +78,7 @@
 
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="checkbox" name="pets_allowed" id="pets_allowed" class="border-2 border-solid border-red-500 float justify-center float-right mt-7 ml-2" default={{$property->pets_allowed}}>
+                                    <input type="checkbox" name="pets_allowed" id="pets_allowed" class="border-2 border-solid border-red-500 float justify-center float-right mt-7 ml-2" value={{$property->pets_allowed}}>
                                     <label for="pets_allowed" class="text-xl float justify-center float-right mt-5">Pets Allowed: </label>
                                     @error("pets_allowed")
                                         <x-errors>{{ $message }}</x-errors>
@@ -89,7 +91,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="sub_category1" class="text-xl">Sub Category 1: </label>
-                                    <select name="sub_category1" id="sub_category1" class="border-2 border-solid border-red-500" default={{$property->sub_category1}}>
+                                    <select name="sub_category1" id="sub_category1" class="border-2 border-solid border-red-500" value={{$property->sub_category1}}>
                                         <option value="city">City</option>
                                         <option value="town">Town</option>
                                         <option value="village">Village</option>
@@ -116,7 +118,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="sub_category2" class="text-xl">Sub Category 2:</label>
-                                    <select name="sub_category2" id="sub_category2" class="border-2 border-solid border-red-500" default={{$property->sub_category2}}>
+                                    <select name="sub_category2" id="sub_category2" class="border-2 border-solid border-red-500" value={{$property->sub_category2}}>
                                         <option value="modern">Modern</option>
                                         <option value="traditional">Traditional</option>
                                         <option value="cozy">Cozy</option>

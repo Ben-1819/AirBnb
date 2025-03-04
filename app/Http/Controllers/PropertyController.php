@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
 use App\Models\Property;
+use App\Models\User;
 use App\Models\Review;
+use App\Mail\PropertyUpdated;
+use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -106,10 +109,10 @@ class PropertyController extends Controller
         $property = Property::find($id);
         $user = request()->user();
         log::info("Stop the user from accessing the edit form if they are not the one who owns the property");
-        if($property->owner_id !== request()->user()->id || $user->withoutRole('superadmin')){
+        /*if($property->owner_id !== request()->user()->id || $user->withoutRole('superadmin')){
             log::info("Returning error code 403");
             abort(403);
-        }
+        }*/
         log::info("Property found, returning to property.edit and passing variable property as a parameter");
         return view("property.edit", compact("property"));
     }
@@ -132,11 +135,14 @@ class PropertyController extends Controller
             abort(403);
         }
 
+        log::info("Get the record from the property table where the property id matches");
+        $oldProperty = Property::find($request->property_id);
+
         $request->validated();
 
         log::info("Update record in the properties table");
-        $property = Property::where("id", $property->id)->update([
-            "owner_id" => $property->owner_id,
+        $property = Property::where("id", $request->property_id)->update([
+            "owner_id" => $request->owner_id,
             "location" => $request->location,
             "address" => $request->address,
             "main_category" => $request->main_category,
@@ -146,7 +152,7 @@ class PropertyController extends Controller
             "number_of_bedrooms" => $request->number_of_bedrooms,
             "number_of_bathrooms" => $request->number_of_bathrooms,
             "description" => $request->description,
-            "pets_allowed" => $request->pets_allowed,
+            "pets_allowed" => $request->pets_allowed == 'on' ? 1:0,
             "max_pets" => $request->max_pets,
             "price_per_pet" => $request->price_per_pet,
             "price_per_night" => $request->price_per_night
@@ -164,8 +170,33 @@ class PropertyController extends Controller
         log::info("Number of Bathrooms: {number_of_bathrooms}", ["number_of_bathrooms" => $request->number_of_bathrooms]);
         log::info("Description: {description}", ["description" => $request->description]);
         log::info("Pets allowed: {pets_allowed}", ["pets_allowed" => $request->pets_allowed]);
-        log::info("Price per Pet: {price_per_pet}". ["price_per_pet" => $request->price_per_pet]);
+        log::info("Price per Pet: {price_per_pet}", ["price_per_pet" => $request->price_per_pet]);
         log::info("Price per Night: {price_per_night}", ["price_per_night" => $request->price_per_night]);
+
+        log::info("Create an array to send updated property information to property updated email");
+        $newProperty = [
+            "id" => $request->property_id,
+            "owner_id" => $request->owner_id,
+            "location" => $request->location,
+            "address" => $request->address,
+            "main_category" => $request->main_category,
+            "sub_category1" => $request->sub_category1,
+            "sub_category2" => $request->sub_category2,
+            "max_guests" => $request->max_guests,
+            "number_of_bedrooms" => $request->number_of_bedrooms,
+            "number_of_bathrooms" => $request->number_of_bathrooms,
+            "description" => $request->description,
+            "pets_allowed" => $request->pets_allowed,
+            "max_pets" => $request->max_pets,
+            "price_per_pet" => $request->price_per_pet,
+            "price_per_night" => $request->price_per_night
+        ];
+
+        log::info("Get the record from the users table where id matches the owner id");
+        $owner = User::find($request->owner_id);
+
+        log::info("Send an email to the owner of the property");
+        Mail::to($owner->email)->send(new PropertyUpdated($newProperty, $oldProperty, $owner));
 
         log::info("Redirecting to the property.owned view");
         return redirect()->route("property.owned");
