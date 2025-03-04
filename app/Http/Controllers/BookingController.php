@@ -10,6 +10,7 @@ use App\Models\Property;
 use App\Mail\BookingConfirmation;
 use App\Mail\BookingUpdateConfirmation;
 use App\Notifications\BookingCreatedNotification;
+use App\Notifications\BookingUpdatedNotification;
 use Mail;
 use Notification;
 use Illuminate\Support\Facades\Log;
@@ -172,6 +173,10 @@ class BookingController extends Controller
         $amount_of_nights = (Carbon::parse($request->booking_start)->diffInDays(Carbon::parse($request->booking_end)));
 
         $property = Property::find($request->property_id);
+
+        log::info("Retrieving the record from the users table for the owner of the property");
+        $owner = User::find($property->owner_id);
+
         log::info("Property price per pet = {price_per_pet}", ["price_per_pet" => $property->price_per_pet]);
 
         log::info("Set extra charges");
@@ -209,6 +214,7 @@ class BookingController extends Controller
 
         log::info("get new booking information");
         $newBooking = [
+            "id" => $request->booking_id,
             "host_id" => $request->host_id,
             "customer_id" => $request->customer_id,
             "property_id" => $request->property_id,
@@ -221,6 +227,9 @@ class BookingController extends Controller
         ];
         log::info("Send an email to the user who made the booking saying the booking has been updated");
         Mail::to($customer->email)->send(new BookingUpdateConfirmation($newBooking, $oldBooking, $customer));
+
+        log::info("Send the owner of the property a notification that their property has been booked");
+        Notification::send($owner, new BookingUpdatedNotification($newBooking, $oldBooking, $customer, $property, $owner));
 
         log::info("Returning to dashboard view");
         return redirect()->route("dashboard");
