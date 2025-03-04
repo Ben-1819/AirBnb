@@ -175,7 +175,7 @@ class BookingController extends Controller
         log::info("Get total costs");
         $booking_cost = strval((doubleval($amount_of_nights) * doubleval($property->price_per_night)) + (doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
         log::info("Update the booking");
-        $update_booking = Booking::where("id", $booking->id)->update([
+        $update_booking = Booking::where("id", $request->booking_id)->update([
             "host_id" => $request->host_id,
             "customer_id" => $request->customer_id,
             "property_id" => $request->property_id,
