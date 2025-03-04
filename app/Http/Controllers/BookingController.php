@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBookingRequest;
+use App\Http\Requests\UpdateBookingRequest;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\Property;
@@ -49,17 +51,11 @@ class BookingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBookingRequest $request)
     {
         log::info("Validate the input");
-        $request->validate([
-            "host_id" => ["required", "integer"],
-            "property_id" => ["required", "integer"],
-            "amount_of_guests" => ["required", "integer"],
-            "amount_of_pets" => ["required", "integer"],
-            "booking_start" => ["required", "date"],
-            "booking_end" => ["required", "date"],
-        ]);
+        $request->validated();
+
         $property = Property::find($request->property_id);
 
         $amount_of_nights = (Carbon::parse($request->booking_start)->diffInDays(Carbon::parse($request->booking_end)));
@@ -144,7 +140,7 @@ class BookingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Booking $booking)
+    public function update(UpdateBookingRequest $request, Booking $booking)
     {
         //Stop users who did not create the booking or own the property from updating the booking
         if($booking->customer_id == request()->user()->id){
@@ -159,14 +155,7 @@ class BookingController extends Controller
         }
 
         log::info("Validate the input");
-        $request->validate([
-            "host_id" => ["required", "integer"],
-            "property_id" => ["required", "integer"],
-            "amount_of_guests" => ["required", "integer"],
-            "amount_of_pets" => ["required", "integer"],
-            "booking_start" => ["required", "date"],
-            "booking_end" => ["required", "date"],
-        ]);
+        $request->validated();
         log::info("Get the record belonging to the property on the booking from the properties table");
         //$property = Property::find($request->property_id);
 
