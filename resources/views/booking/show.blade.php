@@ -33,5 +33,12 @@ use Carbon\Carbon;
             </button>
         </form>
     </div>
+
+    <div>
+        <form action="{{route("booking.edit", $booking->id)}}" method="get">
+            @csrf
+            <x-mybutton>Edit booking</x-mybutton>
+        </form>
+    </div>
 </x-app-layout>
 </html>

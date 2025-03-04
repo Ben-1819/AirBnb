@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Models\User;
 use App\Models\Property;
 use App\Mail\BookingConfirmation;
+use App\Mail\BookingUpdateConfirmation;
 use Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -154,51 +155,69 @@ class BookingController extends Controller
     public function update(UpdateBookingRequest $request, Booking $booking)
     {
         //Stop users who did not create the booking or own the property from updating the booking
-        if($booking->customer_id == request()->user()->id){
-
-        }
-        elseif($booking->host_id == request()->user()->id){
-
-        }
-        else{
-            log::info("User tying to update the booking was not the creator of the booking or the owner of the property");
-            abort(403);
-        }
 
         log::info("Validate the input");
         $request->validated();
         log::info("Get the record belonging to the property on the booking from the properties table");
         //$property = Property::find($request->property_id);
 
-        $amount_of_nights = (Carbon::parse($request->booking_start)->diffInDays(Carbon::parse($request->booking_end)) - 1);
+        log::info("Get the old booking details so that they can be emailed to the user when the booking is updated");
+        $oldBooking = Booking::find($request->booking_id);
 
-        $property = Property::find($booking->property_id);
+        log::info("Calculate the amount of nights that the booking is for");
+        $amount_of_nights = (Carbon::parse($request->booking_start)->diffInDays(Carbon::parse($request->booking_end)));
+
+        $property = Property::find($request->property_id);
+        log::info("Property price per pet = {price_per_pet}", ["price_per_pet" => $property->price_per_pet]);
+
+        log::info("Set extra charges");
+        $extra_charges = strval((doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
+        log::info("Get total costs");
+        $booking_cost = strval((doubleval($amount_of_nights) * doubleval($property->price_per_night)) + (doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
         log::info("Update the booking");
-        $update_booking = Booking::find($booking->id)->update(attributes: [
+        $update_booking = Booking::where("id", $booking->id)->update([
             "host_id" => $request->host_id,
-            "customer_id" => request()->user()->id,
-            "property_id" => $property->id,
+            "customer_id" => $request->customer_id,
+            "property_id" => $request->property_id,
             "amount_of_guests" => $request->amount_of_guests,
             "amount_of_pets" => $request->amount_of_pets,
-            "extra_charges" => strval((doubleval($property->price_per_pet) * doubleval($request->amount_of_pets))),
-            "booking_cost" => strval((doubleval($amount_of_nights) * doubleval($property->price_per_night)) + (doubleval($property->price_per_pet) * doubleval($request->amount_of_pets))),
+            "extra_charges" => $extra_charges,
+            "booking_cost" => $booking_cost,
             "booking_start" => $request->booking_start,
             "booking_end" => $request->booking_end,
         ]);
-        log::info("Booking updated!");
-        log::info("Host on booking: {$update_booking->host_id}");
-        log::info("Customer on booking: {$booking->customer_id}");
-        log::info("Property on booking: {$booking->property_id}");
-        log::info("Amount of guests on booking: {$booking->amount_of_guests}");
-        log::info("Amount of pets on booking: {$booking->amount_of_pets}");
-        log::info("Extra charges on booking: {$booking->extra_charges}");
-        log::info("Total Cost of Booking: {$booking->booking_cost}");
-        log::info("Booking start date: {$booking->booking_start}");
-        log::info("Booking end date: {$update_booking->booking_end}");
 
-        log::info("Returning to booking.show view");
-        $id = $update_booking->id;
-        return redirect()->route("booking.show", compact("id"));
+        log::info("Booking updated!");
+        log::info("Customer on booking: {customer_id}", ["customer_id" => $request->customer_id]);
+        log::info("Property on booking: {property_id}", ["property_id" => $request->property_id]);
+        log::info("Amount of guests on booking: {amount_of_guests}", ["amount_of_guests" => $request->amount_of_guests]);
+        log::info("Amount of pets on booking: {amount_of_pets}", ["amount_of_pets" => $request->amount_of_pets]);
+        log::info("Extra charges on booking: {extra_charges}", ["extra_charges" => $extra_charges]);
+        log::info("Total Cost of Booking: {booking_cost}", ["booking_cost" => $booking_cost]);
+        log::info("Booking start date: {booking_start}", ["booking_start" => $request->booking_start]);
+        log::info("Booking end date: {booking_end}", ["booking_end" => $request->booking_end]);
+
+        log::info("Get the record from the users table that belongs to the user who made the booking");
+        $customerEmail = User::where("id", $request->customer_id)->value("email");
+        $customer = User::find($request->customer_id);
+
+        log::info("get new booking information");
+        $newBooking = [
+            "host_id" => $request->host_id,
+            "customer_id" => $request->customer_id,
+            "property_id" => $request->property_id,
+            "amount_of_guests" => $request->amount_of_guests,
+            "amount_of_pets" => $request->amount_of_pets,
+            "extra_charges" => $extra_charges,
+            "booking_cost" => $booking_cost,
+            "booking_start" => $request->booking_start,
+            "booking_end" => $request->booking_end,
+        ];
+        log::info("Send an email to the user who made the booking saying the booking has been updated");
+        Mail::to($customer->email)->send(new BookingUpdateConfirmation($newBooking, $oldBooking, $customer));
+
+        log::info("Returning to dashboard view");
+        return redirect()->route("dashboard");
     }
 
     /**

@@ -11,6 +11,7 @@
                             @csrf
                             @method("put")
                             <input type="hidden" name="host_id" value={{$booking->host_id}}>
+                            <input type="hidden" name="customer_id" value={{$booking->customer_id}}>
                             <input type="hidden" name="property_id" value={{$booking->property_id}}>
                             <input type="hidden" name="booking_id" value={{$booking->id}}>
 
