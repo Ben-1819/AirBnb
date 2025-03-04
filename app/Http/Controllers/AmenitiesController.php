@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Amenity;
 use App\Models\Property;
 use App\Models\PropertyAmenity;
+use App\Models\User;
+use App\Mail\PropertyCreated;
+use Mail;
 use DB;
 use Illuminate\Support\Facades\Log;
 
@@ -38,6 +41,11 @@ class AmenitiesController extends Controller
             log::info("Amenity ". $amenity." saved for property ID: {$property->id}");
         }
 
+        log::info("Get record from the users table that belongs to the owner of the property");
+        $owner = User::find(request()->user()->id);
+
+        log::info("Send property created mail to the current user");
+        Mail::to(request()->user()->email)->send(new PropertyCreated($property, $owner));
         return redirect()->route("property.index");
     }
 
