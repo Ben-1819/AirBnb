@@ -173,7 +173,9 @@ class BookingController extends Controller
         log::info("Set extra charges");
         $extra_charges = strval((doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
         log::info("Get total costs");
+        log::info("Maths looks like this: ". doubleval($amount_of_nights) ." * ". doubleval($property->price_per_night) ." = ". (doubleval($amount_of_nights) * doubleval($property->price_per_night)));
         $booking_cost = strval((doubleval($amount_of_nights) * doubleval($property->price_per_night)) + (doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
+        log::info("Booking cost should be: ". $booking_cost);
         log::info("Update the booking");
         $update_booking = Booking::where("id", $request->booking_id)->update([
             "host_id" => $request->host_id,
