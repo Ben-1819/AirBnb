@@ -9,7 +9,9 @@ use App\Models\User;
 use App\Models\Property;
 use App\Mail\BookingConfirmation;
 use App\Mail\BookingUpdateConfirmation;
+use App\Notifications\BookingCreatedNotification;
 use Mail;
+use Notification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -99,7 +101,9 @@ class BookingController extends Controller
 
         log::info("Sending the user who made the booking a confirmation email");
         Mail::to(request()->user()->email)->send(new BookingConfirmation($booking, $customer, $owner));
-        return redirect()->route("booking.show", compact("id"));
+        log::info("Send the owner of the property a notification that their property has been booked");
+        Notification::send($owner, new BookingCreatedNotification($booking, $customer, $property, $owner));
+        return redirect()->route("booking.show", ["id" => $booking->id]);
     }
 
     /**
