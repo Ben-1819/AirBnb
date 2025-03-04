@@ -16,9 +16,15 @@ class BookingConfirmation extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public $booking;
+    public $customer;
+    public $owner;
+
+    public function __construct($booking, $customer, $owner)
     {
-        //
+        $this->booking = $booking;
+        $this->customer = $customer;
+        $this->owner = $owner;
     }
 
     /**
@@ -37,7 +43,7 @@ class BookingConfirmation extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'booking.confirmation-mail',
         );
     }
 

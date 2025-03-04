@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateBookingRequest;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\Property;
+use App\Mail\BookingConfirmation;
+use Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -87,6 +89,15 @@ class BookingController extends Controller
 
         log::info("Returning to booking.show view");
         $id = $booking->id;
+
+        log::info("Retrieving the record from the users table for the user who made the booking");
+        $customer = User::find(request()->user()->id);
+
+        log::info("Retrieving the record from the users table for the owner of the property");
+        $owner = User::find($booking->host_id);
+
+        log::info("Sending the user who made the booking a confirmation email");
+        Mail::to(request()->user()->email)->send(new BookingConfirmation($booking, $customer, $owner));
         return redirect()->route("booking.show", compact("id"));
     }
 
