@@ -18,17 +18,6 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        /*$user = User::factory()->create([
-            'first_name' => 'Ben',
-            "last_name" => "Brown",
-            "DOB" => "2004/12/25",
-            'email' => 'ben@gmail.com',
-            'email_verified_at',
-            "password" => Hash::make("password")
-        ]);*/
-
-        //$user->assignRole("superadmin");
-
         $this->call(RoleSeeder::class);
         $this->call(PermissionSeeder::class);
         $this->call(AmenitySeeder::class);
@@ -39,5 +28,15 @@ class DatabaseSeeder extends Seeder
         $superadmin = Role::findByName("superadmin");
         $superadmin->givePermissionTo(["addProperty", "viewProperty", "editProperty", "deleteProperty"]);
 
+        $user = User::create([
+            'first_name' => 'Ben',
+            "last_name" => "Brown",
+            "DOB" => "2004/12/25",
+            'email' => 'ben@gmail.com',
+            'email_verified_at' => now(),
+            "password" => Hash::make("password")
+        ]);
+
+        $user->assignRole("superadmin");
     }
 }
