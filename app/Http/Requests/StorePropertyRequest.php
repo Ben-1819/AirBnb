@@ -43,7 +43,7 @@ class StorePropertyRequest extends FormRequest
             "number_of_bedrooms" => ["required", "integer", "max:10", "min:1"],
             "number_of_bathrooms" => ["required", "integer", "max:10", "min:1"],
             "description" => ["required", "string", "max:500"],
-            "pets_allowed" => ["boolean"],
+            //"pets_allowed" => ["boolean"],
             "max_pets" => ["required", "integer", "max:10", "min:0"],
             "price_per_pet" => ["required", "string", "max:5", "min:1"],
             "price_per_night" => ["required", "string", "max:5", "min:1"]
