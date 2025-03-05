@@ -8,6 +8,8 @@ use App\Models\Property;
 use App\Models\User;
 use App\Models\Review;
 use App\Mail\PropertyUpdated;
+use App\Notifications\PropertyUpdatedNotification;
+use Notification;
 use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -140,8 +142,12 @@ class PropertyController extends Controller
 
         $request->validated();
 
-        log::info("Update record in the properties table");
-        $property = Property::where("id", $request->property_id)->update([
+        log::info("Get the property id");
+        $property_idVar = $request->property_id;
+
+        log::info("Create an array to send updated property information to property updated email");
+        $newProperty = [
+            //"id" => $request->property_id,
             "owner_id" => $request->owner_id,
             "location" => $request->location,
             "address" => $request->address,
@@ -156,7 +162,10 @@ class PropertyController extends Controller
             "max_pets" => $request->max_pets,
             "price_per_pet" => $request->price_per_pet,
             "price_per_night" => $request->price_per_night
-        ]);
+        ];
+
+        log::info("Update record in the properties table");
+        $property = Property::where("id", $request->property_id)->update($newProperty);
         log::info("Record in properties table updated");
 
         log::info("Owner ID: {owner_id}", ["owner_id" => $request->owner_id]);
@@ -173,30 +182,20 @@ class PropertyController extends Controller
         log::info("Price per Pet: {price_per_pet}", ["price_per_pet" => $request->price_per_pet]);
         log::info("Price per Night: {price_per_night}", ["price_per_night" => $request->price_per_night]);
 
-        log::info("Create an array to send updated property information to property updated email");
-        $newProperty = [
-            "id" => $request->property_id,
-            "owner_id" => $request->owner_id,
-            "location" => $request->location,
-            "address" => $request->address,
-            "main_category" => $request->main_category,
-            "sub_category1" => $request->sub_category1,
-            "sub_category2" => $request->sub_category2,
-            "max_guests" => $request->max_guests,
-            "number_of_bedrooms" => $request->number_of_bedrooms,
-            "number_of_bathrooms" => $request->number_of_bathrooms,
-            "description" => $request->description,
-            "pets_allowed" => $request->pets_allowed,
-            "max_pets" => $request->max_pets,
-            "price_per_pet" => $request->price_per_pet,
-            "price_per_night" => $request->price_per_night
-        ];
+        log::info("Add the property id into the array of updated property details");
+        $newProperty["id"] = $property_idVar;
 
         log::info("Get the record from the users table where id matches the owner id");
         $owner = User::find($request->owner_id);
 
         log::info("Send an email to the owner of the property");
         Mail::to($owner->email)->send(new PropertyUpdated($newProperty, $oldProperty, $owner));
+
+        log::info("Get all records from the users table where the user is an admin");
+        $admin = User::role("superadmin")->get();
+
+        log::info("Send a notification to all admins that a property has been updated");
+        Notification::send($admin, new PropertyUpdatedNotification($request->property_id, request()->user()));
 
         log::info("Redirecting to the property.owned view");
         return redirect()->route("property.owned");
