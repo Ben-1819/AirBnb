@@ -12,6 +12,7 @@ use App\Mail\BookingUpdateConfirmation;
 use App\Notifications\BookingCreatedNotification;
 use App\Notifications\BookingUpdatedNotification;
 use App\Events\BookingCreated;
+use App\Events\BookingUpdated;
 use Event;
 use Mail;
 use Notification;
@@ -227,11 +228,13 @@ class BookingController extends Controller
         log::info("Add the booking id to the array with updated values");
         $newBooking["id"] = $booking_idVar;
 
-        log::info("Send an email to the user who made the booking saying the booking has been updated");
-        Mail::to($customer->email)->send(new BookingUpdateConfirmation($newBooking, $oldBooking, $customer));
+        log::info("Call the booking updated event to send an email and a notification about the updated booking");
+        Event::dispatch(new BookingUpdated($newBooking, $oldBooking, $customer, $property, $owner));
 
+        /*log::info("Send an email to the user who made the booking saying the booking has been updated");
+        Mail::to($customer->email)->send(new BookingUpdateConfirmation($newBooking, $oldBooking, $customer));
         log::info("Send the owner of the property a notification that their property has been booked");
-        Notification::send($owner, new BookingUpdatedNotification($newBooking, $oldBooking, $customer, $property, $owner));
+        Notification::send($owner, new BookingUpdatedNotification($newBooking, $oldBooking, $customer, $property, $owner));*/
 
         log::info("Returning to dashboard view");
         return redirect()->route("dashboard");
