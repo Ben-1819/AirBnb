@@ -22,46 +22,46 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 })->middleware(['auth', 'verified']);
 
-Route::name("property.")->prefix("/property")->group(function(){
-    Route::get("", [PropertyController::class, "index"])->name("index");
-    Route::get("/create", [PropertyController::class, "create"])->name("create")->middleware(['auth', 'verified']);
-    Route::post("", [PropertyController::class, "store"])->name("store")->middleware(['auth', 'verified']);
-    Route::get("/owned", [PropertyController::class, "usersProperties"])->name("owned")->middleware(['auth', 'verified']);
-    Route::get("/{id}", [PropertyController::class, "show"])->name("show");
-    Route::get("/{id}/edit", [PropertyController::class, "edit"])->name("edit")->middleware(['auth', 'verified']);
-    Route::put("/{id}", [PropertyController::class, "update"])->name("update")->middleware(['auth', 'verified']);
-    Route::delete("/{id}", [PropertyController::class, "destroy"])->name("destroy")->middleware(['auth', 'verified']);
-    Route::patch("/{id}/addReview", [PropertyController::class, "addReview"])->name("addReview")->middleware(['auth', 'verified']);
+Route::name("property.")->prefix("/property")->controller(PropertyController::class)->group(function(){
+    Route::get("", "index")->name("index");
+    Route::get("/create", "create")->name("create")->middleware(['auth', 'verified']);
+    Route::post("", "store")->name("store")->middleware(['auth', 'verified']);
+    Route::get("/owned", "usersProperties")->name("owned")->middleware(['auth', 'verified']);
+    Route::get("/{id}", "show")->name("show");
+    Route::get("/{id}/edit", "edit")->name("edit")->middleware(['auth', 'verified']);
+    Route::put("/{id}", "update")->name("update")->middleware(['auth', 'verified']);
+    Route::delete("/{id}", "destroy")->name("destroy")->middleware(['auth', 'verified']);
+    Route::patch("/{id}/addReview", "addReview")->name("addReview")->middleware(['auth', 'verified']);
 });
 
-Route::name("amenity.")->prefix("/amenity")->group(function(){
-    Route::get("", [AmenitiesController::class, "add"])->name("add");
-    Route::post("", [AmenitiesController::class, "store"])->name("store");
-    Route::get("/{id}/edit", [AmenitiesController::class, "edit"])->name("edit");
-    Route::post("/edit", [AmenitiesController::class, "update"])->name("update");
-    Route::delete("/{id}", [AmenitiesController::class, "destroyAll"])->name("destroyAll");
-    Route::get("/{id}/list", [AmenitiesController::class, "list"])->name("list");
-    Route::delete("/{id}/delete", [AmenitiesController::class, "delete"])->name("destroy");
+Route::name("amenity.")->prefix("/amenity")->controller(AmenitiesController::class)->group(function(){
+    Route::get("", "add")->name("add");
+    Route::post("", "store")->name("store");
+    Route::get("/{id}/edit", "edit")->name("edit");
+    Route::post("/edit", "update")->name("update");
+    Route::delete("/{id}", "destroyAll")->name("destroyAll");
+    Route::get("/{id}/list", "list")->name("list");
+    Route::delete("/{id}/delete", "delete")->name("destroy");
 })->middleware(['auth', 'verified']);
 
-Route::name("booking.")->prefix("/booking")->group(function(){
-    Route::get("", [BookingController::class, "index"])->name("index");
-    Route::get("/{id}/create", [BookingController::class, "create"])->name("create");
-    Route::post("", [BookingController::class, "store"])->name("store");
-    Route::get("/{id}", [BookingController::class, "show"])->name("show");
-    Route::get("/{id}/edit", [BookingController::class, "edit"])->name("edit");
-    Route::put("/{id}", [BookingController::class, "update"])->name("update");
-    Route::delete("/{id}", [BookingController::class, "destroy"])->name("destroy");
+Route::name("booking.")->prefix("/booking")->controller(BookingController::class)->group(function(){
+    Route::get("", "index")->name("index");
+    Route::get("/{id}/create", "create")->name("create");
+    Route::post("", "store")->name("store");
+    Route::get("/{id}", "show")->name("show");
+    Route::get("/{id}/edit", "edit")->name("edit");
+    Route::put("/{id}", "update")->name("update");
+    Route::delete("/{id}", "destroy")->name("destroy");
 })->middleware(['auth', 'verified']);
 
-Route::name("review.")->prefix("/review")->group(function(){
-    Route::get("", [ReviewController::class, "index"])->name("index");
-    Route::get("/{property}/create", [ReviewController::class, "create"])->name("create");
-    Route::post("", [ReviewController::class, "store"])->name("store");
-    Route::get("/{id}", [ReviewController::class, "show"])->name("show");
-    Route::get("/{id}/edit", [ReviewController::class, "edit"])->name("edit");
-    Route::put("/{id}", [ReviewController::class, "update"])->name("update");
-    Route::delete("/{id}", [ReviewController::class, "destroy"])->name("destroy");
+Route::name("review.")->prefix("/review")->controller(ReviewController::class)->group(function(){
+    Route::get("", "index")->name("index");
+    Route::get("/{property}/create", "create")->name("create");
+    Route::post("", "store")->name("store");
+    Route::get("/{id}", "show")->name("show");
+    Route::get("/{id}/edit", "edit")->name("edit");
+    Route::put("/{id}", "update")->name("update");
+    Route::delete("/{id}", "destroy")->name("destroy");
 });
 
 
