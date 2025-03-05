@@ -64,19 +64,19 @@ class PropertyController extends Controller
         $property->save();
         log::info("New record saved in properties table");
 
-        log::info("Owner ID: {owner_id}", ["owner_id" => $request->owner_id]);
-        log::info("Location: {location}", ["location" => $request->location]);
-        log::info("Address: {address}", ["address" => $request->address]);
-        log::info("Main Category: {main_category}", ["main_category" => $request->main_category]);
-        log::info("Sub Category 1: {sub_category1}", ["sub_category1" => $request->sub_category1]);
-        log::info("Sub Category 2: {sub_category2}", ["sub_category2" => $request->sub_category2]);
-        log::info("Max Guests: {max_guests}", ["max_guests" => $request->max_guests]);
-        log::info("Number of Bedrooms: {number_of_bedrooms}", ["number_of_bedrooms" => $request->number_of_bedrooms]);
-        log::info("Number of Bathrooms: {number_of_bathrooms}", ["number_of_bathrooms" => $request->number_of_bathrooms]);
-        log::info("Description: {description}", ["description" => $request->description]);
-        log::info("Pets allowed: {pets_allowed}", ["pets_allowed" => $request->pets_allowed]);
-        log::info("Price per Pet: {{$request->price_per_pet}}");
-        log::info("Price per Night: {price_per_night}", ["price_per_night" => $request->price_per_night]);
+        log::info("Owner ID: {owner_id}", ["owner_id" => $property->owner_id]);
+        log::info("Location: {location}", ["location" => $property->location]);
+        log::info("Address: {address}", ["address" => $property->address]);
+        log::info("Main Category: {main_category}", ["main_category" => $property->main_category]);
+        log::info("Sub Category 1: {sub_category1}", ["sub_category1" => $property->sub_category1]);
+        log::info("Sub Category 2: {sub_category2}", ["sub_category2" => $property->sub_category2]);
+        log::info("Max Guests: {max_guests}", ["max_guests" => $property->max_guests]);
+        log::info("Number of Bedrooms: {number_of_bedrooms}", ["number_of_bedrooms" => $property->number_of_bedrooms]);
+        log::info("Number of Bathrooms: {number_of_bathrooms}", ["number_of_bathrooms" => $property->number_of_bathrooms]);
+        log::info("Description: {description}", ["description" => $property->description]);
+        log::info("Pets allowed: {pets_allowed}", ["pets_allowed" => $property->pets_allowed]);
+        log::info("Price per Pet: {{$property->price_per_pet}}");
+        log::info("Price per Night: {price_per_night}", ["price_per_night" => $property->price_per_night]);
 
         log::info("Redirecting to the amenities selection view");
         //$property = Property::latest();

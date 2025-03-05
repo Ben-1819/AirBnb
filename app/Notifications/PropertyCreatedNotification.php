@@ -14,11 +14,9 @@ class PropertyCreatedNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public $admin;
     public $property;
-    public function __construct($admin, $property)
+    public function __construct($property)
     {
-        $this->admin = $admin;
         $this->property = $property;
     }
 
