@@ -11,6 +11,7 @@
                         <form action="{{route("review.update", $review)}}" method="post">
                             @csrf
                             @method("put")
+                            <input type="hidden" value={{$review->id}} name="review_id">
                             <input type="hidden" value={{$review->property_id}} name="property_id">
                             <input type="hidden" value={{$review->reviewer_id}} name="reviewer_id">
                             <div class="row row-space mb-3">

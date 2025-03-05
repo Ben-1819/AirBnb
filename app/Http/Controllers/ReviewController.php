@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Review;
 use App\Models\Property;
 use App\Notifications\ReviewCreatedNotification;
+use App\Notifications\ReviewUpdatedNotification;
 use Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -68,7 +69,7 @@ class ReviewController extends Controller
         $owner = User::find($property->owner_id);
         log::info("Send a notification to the owner of the property that a review has been left");
         Notification::send($owner, new ReviewCreatedNotification($property->id, request()->user(), $review));
-        //Redirect to the review created virw
+        //Redirect to the review created view
         return view("review.created", compact("property", "review"));
     }
 
@@ -102,26 +103,44 @@ class ReviewController extends Controller
         log::info("Validate the users input");
         $request->validated();
 
-        log::info("Update the record in the reviews table");
-        $update_review = Review::where("id", $review->id)->update([
-            "property_id" => $review->property_id,
-            "reviewer_id" => $review->reviewer_id,
+        log::info("Get the id of the property being reviewed");
+        $property = Property::find($request->property_id);
+
+        log::info("Get review id");
+        $review_idVar = $request->review_id;
+
+        log::info("Create array for new review values");
+        $newReview = [
+            "property_id" => $request->property_id,
+            "reviewer_id" => $request->reviewer_id,
             "review_title" => $request->review_title,
             "review_contents" => $request->review_contents,
             "rating" => $request->rating,
-        ]);
+        ];
+
+        log::info("Update the record in the reviews table");
+        $update_review = Review::where("id", $request->review_id)->update($newReview);
+
+        log::info("Add review id to array with new review data");
+        $newReview["id"] = $review_idVar;
 
         log::info("Review updated successfully");
-        log::info("Review id: {$review->id}");
-        log::info("Property being reviewed: {$review->property_id}");
-        log::info("Id of reviewer: {$review->reviewer_id}");
-        log::info("Review title: {$review->review_title}");
-        log::info("Review contents: {$review->review_contents}");
-        log::info("Rating: {$review->rating}");
+        log::info("Review id: {$newReview["id"]}");
+        log::info("Property being reviewed: {$newReview["property_id"]}");
+        log::info("Id of reviewer: {$newReview["reviewer_id"]}");
+        log::info("Review title: {$newReview["review_title"]}");
+        log::info("Review contents: {$newReview["review_contents"]}");
+        log::info("Rating: {$newReview["rating"]}");
+
+        log::info("Get owner of the property");
+        $owner = User::find($property->owner_id);
+
+        log::info("Send a notification to the owner of the property that a review has been left");
+        Notification::send($owner, new ReviewUpdatedNotification($property->id, request()->user(), $newReview));
 
         //Redirect to the route that will automatically add the review onto the total reviews for the property
         //And calculate its average rating
-        $property = Property::find($review->property_id);
+
         return view("review.created", compact("property", "review"));
     }
 
