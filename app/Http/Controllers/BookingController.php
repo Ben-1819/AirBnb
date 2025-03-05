@@ -57,39 +57,24 @@ class BookingController extends Controller
     public function store(StoreBookingRequest $request)
     {
         log::info("Validate the input");
-        $request->validated();
+        $addBooking = $request->validated();
 
         $property = Property::find($request->property_id);
+        $addBooking["customer_id"] = request()->user()->id;
+        $addBooking["property_id"] = $property->id;
 
         $amount_of_nights = (Carbon::parse($request->booking_start)->diffInDays(Carbon::parse($request->booking_end)));
+
+        log::info("Get the extra charges on the booking");
+        $addBooking["extra_charges"] = strval((doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
+
+        log::info("Get the total cost of the booking");
+        $addBooking["booking_cost"] = strval((doubleval($amount_of_nights) * doubleval($property->price_per_night)) + (doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
         //(bcmul($property->price_per_pet, strval($request->amount_of_pets), 2)),
         //(bcmul(strval($amount_of_nights), $property->price_per_night, 2)) + (bcmul($property->price_per_pet, strval($request->amount_of_pets), 2)),
         log::info("Create new booking");
-        $booking = new Booking([
-            "host_id" => $request->host_id,
-            "customer_id" => request()->user()->id,
-            "property_id" => $property->id,
-            "amount_of_guests" => $request->amount_of_guests,
-            "amount_of_pets" => $request->amount_of_pets,
-            "extra_charges" => strval((doubleval($property->price_per_pet) * doubleval($request->amount_of_pets))),
-            "booking_cost" => strval((doubleval($amount_of_nights) * doubleval($property->price_per_night)) + (doubleval($property->price_per_pet) * doubleval($request->amount_of_pets))),
-            "booking_start" => $request->booking_start,
-            "booking_end" => $request->booking_end,
-        ]);
+        $booking = new Booking($addBooking);
         $booking->save();
-        log::info("Booking Saved!");
-        log::info("Host on booking: {$booking->host_id}");
-        log::info("Customer on booking: {$booking->customer_id}");
-        log::info("Property on booking: {$booking->property_id}");
-        log::info("Amount of guests on booking: {$booking->amount_of_guests}");
-        log::info("Amount of pets on booking: {$booking->amount_of_pets}");
-        log::info("Extra charges on booking: {$booking->extra_charges}");
-        log::info("Total Cost of Booking: {$booking->booking_cost}");
-        log::info("Booking start date: {$booking->booking_start}");
-        log::info("Booking end date: {$booking->booking_end}");
-
-        log::info("Returning to booking.show view");
-        $id = $booking->id;
 
         log::info("Retrieving the record from the users table for the user who made the booking");
         $customer = User::find(request()->user()->id);
@@ -158,9 +143,7 @@ class BookingController extends Controller
         //Stop users who did not create the booking or own the property from updating the booking
 
         log::info("Validate the input");
-        $request->validated();
-        log::info("Get the record belonging to the property on the booking from the properties table");
-        //$property = Property::find($request->property_id);
+        $newBooking = $request->validated();
 
         log::info("Get the old booking details so that they can be emailed to the user when the booking is updated");
         $oldBooking = Booking::find($request->booking_id);
@@ -176,45 +159,25 @@ class BookingController extends Controller
         log::info("Property price per pet = {price_per_pet}", ["price_per_pet" => $property->price_per_pet]);
 
         log::info("Set extra charges");
-        $extra_charges = strval((doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
+        $newBooking["extra_charges"] = $extra_charges = strval((doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
         log::info("Get total costs");
         log::info("Maths looks like this: ". doubleval($amount_of_nights) ." * ". doubleval($property->price_per_night) ." = ". (doubleval($amount_of_nights) * doubleval($property->price_per_night)));
-        $booking_cost = strval((doubleval($amount_of_nights) * doubleval($property->price_per_night)) + (doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
+        $newBooking["booking_cost"] = $booking_cost = strval((doubleval($amount_of_nights) * doubleval($property->price_per_night)) + (doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
         log::info("Booking cost should be: ". $booking_cost);
         log::info("Update the booking");
 
         log::info("Get the id of the booking being updated");
         $booking_idVar = $request->booking_id;
 
-        log::info("get new booking information");
-        $newBooking = [
-            //"id" => $request->booking_id,
-            "host_id" => $request->host_id,
-            "customer_id" => $request->customer_id,
-            "property_id" => $request->property_id,
-            "amount_of_guests" => $request->amount_of_guests,
-            "amount_of_pets" => $request->amount_of_pets,
-            "extra_charges" => $extra_charges,
-            "booking_cost" => $booking_cost,
-            "booking_start" => $request->booking_start,
-            "booking_end" => $request->booking_end,
-        ];
         $update_booking = Booking::where("id", $request->booking_id)->update($newBooking);
 
-        log::info("Booking updated!");
-        log::info("Customer on booking: {customer_id}", ["customer_id" => $request->customer_id]);
-        log::info("Property on booking: {property_id}", ["property_id" => $request->property_id]);
-        log::info("Amount of guests on booking: {amount_of_guests}", ["amount_of_guests" => $request->amount_of_guests]);
-        log::info("Amount of pets on booking: {amount_of_pets}", ["amount_of_pets" => $request->amount_of_pets]);
-        log::info("Extra charges on booking: {extra_charges}", ["extra_charges" => $extra_charges]);
-        log::info("Total Cost of Booking: {booking_cost}", ["booking_cost" => $booking_cost]);
-        log::info("Booking start date: {booking_start}", ["booking_start" => $request->booking_start]);
-        log::info("Booking end date: {booking_end}", ["booking_end" => $request->booking_end]);
+
 
         log::info("Get the record from the users table that belongs to the user who made the booking");
-        $customerEmail = User::where("id", $request->customer_id)->value("email");
         $customer = User::find($request->customer_id);
 
+        log::info("Add the customer id to the array with updated values");
+        $newBooking["customer_id"] = $request->customer_id;
         log::info("Add the booking id to the array with updated values");
         $newBooking["id"] = $booking_idVar;
 
