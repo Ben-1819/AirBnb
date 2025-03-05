@@ -11,6 +11,8 @@ use App\Mail\BookingConfirmation;
 use App\Mail\BookingUpdateConfirmation;
 use App\Notifications\BookingCreatedNotification;
 use App\Notifications\BookingUpdatedNotification;
+use App\Events\BookingCreated;
+use Event;
 use Mail;
 use Notification;
 use Illuminate\Support\Facades\Log;
@@ -100,10 +102,13 @@ class BookingController extends Controller
         log::info("Retrieving the record from the users table for the owner of the property");
         $owner = User::find($booking->host_id);
 
-        log::info("Sending the user who made the booking a confirmation email");
+        log::info("Call event to send confirmation email and notification");
+        Event::dispatch(new BookingCreated($booking, $property, $customer, $owner));
+
+        /*log::info("Sending the user who made the booking a confirmation email");
         Mail::to(request()->user()->email)->send(new BookingConfirmation($booking, $customer, $owner));
         log::info("Send the owner of the property a notification that their property has been booked");
-        Notification::send($owner, new BookingCreatedNotification($booking, $customer, $property, $owner));
+        Notification::send($owner, new BookingCreatedNotification($booking, $customer, $property, $owner));*/
         return redirect()->route("booking.show", ["id" => $booking->id]);
     }
 
