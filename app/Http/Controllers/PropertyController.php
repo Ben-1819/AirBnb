@@ -7,8 +7,10 @@ use App\Http\Requests\UpdatePropertyRequest;
 use App\Models\Property;
 use App\Models\User;
 use App\Models\Review;
-use App\Mail\PropertyUpdated;
+use App\Mail\PropertyUpdatedEmail;
 use App\Notifications\PropertyUpdatedNotification;
+use App\Events\PropertyUpdated;
+use Event;
 use Notification;
 use Mail;
 use Illuminate\Http\Request;
@@ -188,14 +190,17 @@ class PropertyController extends Controller
         log::info("Get the record from the users table where id matches the owner id");
         $owner = User::find($request->owner_id);
 
-        log::info("Send an email to the owner of the property");
-        Mail::to($owner->email)->send(new PropertyUpdated($newProperty, $oldProperty, $owner));
+        log::info("Call event to send out email and notification");
+        Event::dispatch(new PropertyUpdated($newProperty, $oldProperty, $owner));
+
+        /*log::info("Send an email to the owner of the property");
+        Mail::to($owner->email)->send(new PropertyUpdatedEmail($newProperty, $oldProperty, $owner));
 
         log::info("Get all records from the users table where the user is an admin");
         $admin = User::role("superadmin")->get();
 
         log::info("Send a notification to all admins that a property has been updated");
-        Notification::send($admin, new PropertyUpdatedNotification($request->property_id, request()->user()));
+        Notification::send($admin, new PropertyUpdatedNotification($request->property_id, request()->user()));*/
 
         log::info("Redirecting to the property.owned view");
         return redirect()->route("property.owned");
