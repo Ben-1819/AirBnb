@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BookingCreated;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\Property;
-use App\Mail\BookingConfirmation;
-use App\Mail\BookingUpdateConfirmation;
-use App\Notifications\BookingCreatedNotification;
-use App\Notifications\BookingUpdatedNotification;
-use App\Events\BookingCreated;
 use App\Events\BookingUpdated;
 use Event;
-use Mail;
-use Notification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -103,13 +97,9 @@ class BookingController extends Controller
         log::info("Retrieving the record from the users table for the owner of the property");
         $owner = User::find($booking->host_id);
 
-        log::info("Call event to send confirmation email and notification");
+        log::info("Call the booking created event to send out a confirmation email and notification");
         Event::dispatch(new BookingCreated($booking, $property, $customer, $owner));
 
-        /*log::info("Sending the user who made the booking a confirmation email");
-        Mail::to(request()->user()->email)->send(new BookingConfirmation($booking, $customer, $owner));
-        log::info("Send the owner of the property a notification that their property has been booked");
-        Notification::send($owner, new BookingCreatedNotification($booking, $customer, $property, $owner));*/
         return redirect()->route("booking.show", ["id" => $booking->id]);
     }
 
@@ -228,13 +218,8 @@ class BookingController extends Controller
         log::info("Add the booking id to the array with updated values");
         $newBooking["id"] = $booking_idVar;
 
-        log::info("Call the booking updated event to send an email and a notification about the updated booking");
+        log::info("Call event to send out update confirmation email and notification");
         Event::dispatch(new BookingUpdated($newBooking, $oldBooking, $customer, $property, $owner));
-
-        /*log::info("Send an email to the user who made the booking saying the booking has been updated");
-        Mail::to($customer->email)->send(new BookingUpdateConfirmation($newBooking, $oldBooking, $customer));
-        log::info("Send the owner of the property a notification that their property has been booked");
-        Notification::send($owner, new BookingUpdatedNotification($newBooking, $oldBooking, $customer, $property, $owner));*/
 
         log::info("Returning to dashboard view");
         return redirect()->route("dashboard");

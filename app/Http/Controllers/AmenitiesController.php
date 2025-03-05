@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Notifications\PropertyCreatedNotification;
 use Event;
 use App\Events\PropertyCreated;
 use Illuminate\Http\Request;
@@ -10,9 +9,6 @@ use App\Models\Amenity;
 use App\Models\Property;
 use App\Models\PropertyAmenity;
 use App\Models\User;
-use App\Mail\PropertyCreatedEmail;
-use Notification;
-use Mail;
 use DB;
 use Illuminate\Support\Facades\Log;
 
@@ -50,14 +46,7 @@ class AmenitiesController extends Controller
 
         log::info("Call event to send out email and notification");
         Event::dispatch(new PropertyCreated($property, $owner));
-        //log::info("Send property created mail to the current user");
-        //Mail::to(request()->user()->email)->send(new PropertyCreatedEmail($property, $owner));
 
-        //log::info("Get all records from the users table where the user is an admin");
-        //$admin = User::role("superadmin")->get();
-
-        //log::info("Send a notification to all admins that a property has been created");
-        //Notification::send($admin, new PropertyCreatedNotification($admin, $property));
         return redirect()->route("property.index");
     }
 
