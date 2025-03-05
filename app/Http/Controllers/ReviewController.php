@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
+use App\Models\User;
 use App\Models\Review;
 use App\Models\Property;
+use App\Notifications\ReviewCreatedNotification;
+use Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
@@ -61,6 +64,10 @@ class ReviewController extends Controller
         log::info("Review Contents: {$review->review_contents}");
         log::info("Rating: {$review->rating}");
 
+        log::info("Get owner of the property");
+        $owner = User::find($property->owner_id);
+        log::info("Send a notification to the owner of the property that a review has been left");
+        Notification::send($owner, new ReviewCreatedNotification($property->id, request()->user(), $review));
         //Redirect to the review created virw
         return view("review.created", compact("property", "review"));
     }
@@ -116,7 +123,6 @@ class ReviewController extends Controller
         //And calculate its average rating
         $property = Property::find($review->property_id);
         return view("review.created", compact("property", "review"));
-
     }
 
     /**
