@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Models\User;
 use App\Models\Booking;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\log;
+use Illuminate\Support\Facades\Log;
 
 
 class StoreReviewRequest extends FormRequest

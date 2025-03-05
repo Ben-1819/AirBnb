@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Review;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\log;
+use Illuminate\Support\Facades\Log;
 
 class UpdateReviewRequest extends FormRequest
 {
