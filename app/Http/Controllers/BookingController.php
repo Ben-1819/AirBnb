@@ -186,7 +186,10 @@ class BookingController extends Controller
         $booking_cost = strval((doubleval($amount_of_nights) * doubleval($property->price_per_night)) + (doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
         log::info("Booking cost should be: ". $booking_cost);
         log::info("Update the booking");
-        $update_booking = Booking::where("id", $request->booking_id)->update([
+
+        log::info("get new booking information");
+        $newBooking = [
+            //"id" => $request->booking_id,
             "host_id" => $request->host_id,
             "customer_id" => $request->customer_id,
             "property_id" => $request->property_id,
@@ -196,7 +199,8 @@ class BookingController extends Controller
             "booking_cost" => $booking_cost,
             "booking_start" => $request->booking_start,
             "booking_end" => $request->booking_end,
-        ]);
+        ];
+        $update_booking = Booking::where("id", $request->booking_id)->update($newBooking);
 
         log::info("Booking updated!");
         log::info("Customer on booking: {customer_id}", ["customer_id" => $request->customer_id]);
@@ -212,19 +216,7 @@ class BookingController extends Controller
         $customerEmail = User::where("id", $request->customer_id)->value("email");
         $customer = User::find($request->customer_id);
 
-        log::info("get new booking information");
-        $newBooking = [
-            "id" => $request->booking_id,
-            "host_id" => $request->host_id,
-            "customer_id" => $request->customer_id,
-            "property_id" => $request->property_id,
-            "amount_of_guests" => $request->amount_of_guests,
-            "amount_of_pets" => $request->amount_of_pets,
-            "extra_charges" => $extra_charges,
-            "booking_cost" => $booking_cost,
-            "booking_start" => $request->booking_start,
-            "booking_end" => $request->booking_end,
-        ];
+
         log::info("Send an email to the user who made the booking saying the booking has been updated");
         Mail::to($customer->email)->send(new BookingUpdateConfirmation($newBooking, $oldBooking, $customer));
 
