@@ -187,6 +187,9 @@ class BookingController extends Controller
         log::info("Booking cost should be: ". $booking_cost);
         log::info("Update the booking");
 
+        log::info("Get the id of the booking being updated");
+        $booking_idVar = $request->booking_id;
+
         log::info("get new booking information");
         $newBooking = [
             //"id" => $request->booking_id,
@@ -216,6 +219,8 @@ class BookingController extends Controller
         $customerEmail = User::where("id", $request->customer_id)->value("email");
         $customer = User::find($request->customer_id);
 
+        log::info("Add the booking id to the array with updated values");
+        $newBooking["id"] = $booking_idVar;
 
         log::info("Send an email to the user who made the booking saying the booking has been updated");
         Mail::to($customer->email)->send(new BookingUpdateConfirmation($newBooking, $oldBooking, $customer));
