@@ -1,6 +1,7 @@
 <?php
 use App\Models\Amenity;
 use App\Models\PropertyAmenity;
+use App\Models\Location;
 ?>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -28,10 +29,15 @@ use App\Models\PropertyAmenity;
                         <p>{{$owner->first_name}}, your property has been created</p>
                         <p>The details are as follows:</p>
                         <h3>Property details:</h3>
+                        <?php
+                        $location = Location::where("property_id",$property->id)->get();
+                        ?>
                         <div class="row row-space mb-3">
                             <div class="col-6">
-                                <p>Property location: {{$property->location}}</p>
-                                <p>Property address: {{$property->address}}</p>
+                                <p>Property address: {{$location->address}}</p>
+                                <p>Property city: {{$location->city}}</p>
+                                <p>Property state: {{$location->state}}</p>
+                                <p>Property postcode: {{$location->postcode}}</p>
                             </div>
                         </div>
                         <div class="row row-space mb-3">

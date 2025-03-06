@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
             $table->foreignId("owner_id")->constrained("users");
-            $table->string("location");
-            $table->string("address");
+            /*$table->string("location");
+            $table->string("address");*/
             $table->string("main_category");
             $table->string("sub_category1");
             $table->string("sub_category2");

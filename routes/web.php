@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\AmenitiesController;
@@ -64,5 +65,9 @@ Route::name("review.")->prefix("/review")->controller(ReviewController::class)->
     Route::delete("/{id}", "destroy")->name("destroy");
 });
 
+Route::name("location.")->prefix("/location")->controller(LocationController::class)->group(function(){
+    Route::get("", "create")->name("create");
+    Route::post("", "store")->name("store");
+});
 
 require __DIR__.'/auth.php';
