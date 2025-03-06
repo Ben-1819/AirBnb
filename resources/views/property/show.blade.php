@@ -2,6 +2,7 @@
 use App\Models\PropertyAmenity;
 use App\Models\Amenity;
 use App\Models\User;
+use App\Models\Location;
 ?>
 <!DOCTYPE html>
 <x-app-layout>
@@ -15,7 +16,7 @@ use App\Models\User;
                 <tr>
                     <th>Property ID</th>
                     <th>Property Owner</th>
-                    <th>Property Location</th>
+                    <th>Property Country</th>
                     <th>Amount of Reviews</th>
                     <th>Average Rating</th>
                 </tr>
@@ -25,9 +26,10 @@ use App\Models\User;
                     <td>{{$property->id}}</td>
                     <?php
                     $owner = User::find($property->owner_id);
+                    $location = Location::where("property_id", $property->id)->first();
                     ?>
                     <td>{{$owner->first_name}} {{$owner->last_name}}</td>
-                    <td>{{$property->location}}</td>
+                    <td>{{$location->state}}</td>
                     <td>{{$property->number_of_reviews}}</td>
                     <td>{{$property->avg_rating}}</td>
                 </tr>

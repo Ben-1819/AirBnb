@@ -1,3 +1,6 @@
+<?php
+use App\Models\Location;
+?>
 <!DOCTYPE html>
     <x-app-layout>
         <div>
@@ -9,8 +12,8 @@
                 <thead>
                     <tr>
                         <th>Property Id</th>
-                        <th>Property Location</th>
-                        <th>Property Address</th>
+                        <th>Property Country</th>
+                        <th>Property City</th>
                         <th>Max Guests</th>
                         <th>Bedrooms</th>
                         <th>Bathrooms</th>
@@ -21,9 +24,12 @@
                     @if(count($all_properties) > 0)
                         @foreach($all_properties as $property)
                             <tr>
+                                <?php
+                                $location = Location::where("property_id", $property->id)->first();
+                                ?>
                                 <td>{{$property->id}}</td>
-                                <td>{{$property->location}}</td>
-                                <td>{{$property->address}}</td>
+                                <td>{{$location->state}}</td>
+                                <td>{{$location->city}}</td>
                                 <td>{{$property->max_guests}}</td>
                                 <td>{{$property->number_of_bedrooms}}</td>
                                 <td>{{$property->number_of_bathrooms}}</td>
