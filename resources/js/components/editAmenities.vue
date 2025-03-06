@@ -7,7 +7,7 @@ const id = defineProps({
     id: Number
 })
 
-const editAmenities = () => {
+/*const editAmenities = () => {
     console.log("Button Clicked");
     console.log(id)
     axios.post("/amenity/edit", { checkedAmenities: checkedAmenities.value, id: id }, {
@@ -21,7 +21,22 @@ const editAmenities = () => {
     .catch(error => {
       console.error('Error sending data:', error);
     });
-};
+};*/
+
+async function sendToController(){
+    console.log("Button Clicked");
+    const response = await axios.post('/checkedAmenities', { checkedAmenities: checkedAmenities.value, id: id}, {
+        headers: {
+        'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    if(response.status === 200 || response.status === 302){
+        window.location.href = '/dashboard';
+    }
+    else{
+        console.error("Problem");
+    }
+}
 </script>
 
 <template>
