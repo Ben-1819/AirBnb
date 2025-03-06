@@ -4,20 +4,45 @@ import axios from 'axios';
 
 const checkedAmenities = ref([]);
 
-const sendToController = () => {
+/*const sendToController = () => {
     console.log("Button Clicked");
-    axios.post('/amenity', { checkedAmenities: checkedAmenities.value }, {
+
+    const response = axios.post('/amenity', { checkedAmenities: checkedAmenities.value }, {
         headers: {
         'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
         }
     })
-    .then(response => {
+    if(response.status === 200 || response.status === 302){
+        window.location.href = '/location';
+    }
+    else{
+        console.error("Problem");
+    }
+    /*.then(response => {
       console.log('Data sent successfully:', response.data);
-    })
-    .catch(error => {
+
+    })*/
+    /*.catch(error => {
       console.error('Error sending data:', error);
     });
-};
+
+};*/
+async function sendToController(){
+    console.log("Button Clicked");
+    const response = await axios.post('/amenity', { checkedAmenities: checkedAmenities.value }, {
+        headers: {
+        'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    if(response.status === 200 || response.status === 302){
+        window.location.href = '/dashboard';
+    }
+    else{
+        console.error("Problem");
+    }
+}
+
+
 </script>
 
 <template>
