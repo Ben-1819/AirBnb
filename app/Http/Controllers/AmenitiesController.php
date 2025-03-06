@@ -45,9 +45,6 @@ class AmenitiesController extends Controller
         $owner = User::find(request()->user()->id);
 
         log::info("Call event to send out email and notification");
-        Event::dispatch(new PropertyCreated($property, $owner));
-
-        return redirect()->route("property.index");
     }
 
     public function destroyAll($id){

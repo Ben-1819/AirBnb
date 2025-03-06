@@ -45,8 +45,8 @@ class PropertyController extends Controller
         log::info("Insert a new record into the properties table");
         $property = new Property([
             "owner_id" => $request->user()->id,
-            "location" => $request->location,
-            "address" => $request->address,
+            //"location" => $request->location,
+            //"address" => $request->address,
             "main_category" => $request->main_category,
             "sub_category1" => $request->sub_category1,
             "sub_category2" => $request->sub_category2,
@@ -63,8 +63,8 @@ class PropertyController extends Controller
         log::info("New record saved in properties table");
 
         log::info("Owner ID: {owner_id}", ["owner_id" => $property->owner_id]);
-        log::info("Location: {location}", ["location" => $property->location]);
-        log::info("Address: {address}", ["address" => $property->address]);
+        //log::info("Location: {location}", ["location" => $property->location]);
+        //log::info("Address: {address}", ["address" => $property->address]);
         log::info("Main Category: {main_category}", ["main_category" => $property->main_category]);
         log::info("Sub Category 1: {sub_category1}", ["sub_category1" => $property->sub_category1]);
         log::info("Sub Category 2: {sub_category2}", ["sub_category2" => $property->sub_category2]);
@@ -80,7 +80,7 @@ class PropertyController extends Controller
         //$property = Property::latest();
         //$propertyID = $property->id;
 
-        return redirect()->route("amenity.add");
+        return redirect()->route("location.create");
     }
 
     /**
