@@ -14,9 +14,9 @@
                         <div class="row row-space mb-3">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="location" class="text-xl">Location: </label>
-                                    <input id="location" name="location" type="text" class="border-2 border-solid border-red-500" value={{$property->location}}>
-                                    @error("location")
+                                    <label for="number_of_bedrooms" class="text-xl">Number of Bedrooms: </label>
+                                    <input id="number_of_bedrooms" name="number_of_bedrooms" type="number" class="border-2 border-solid border-red-500" value={{$property->number_of_bedrooms}}>
+                                    @error("number_of_bedrooms")
                                         <x-errors>{{ $message }}</x-errors>
                                     @enderror
                                 </div>
@@ -36,11 +36,7 @@
                         <div class="row row-space mb-3">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="address" class="text-xl">Address: </label>
-                                    <input id="address" name="address" type="text" class="border-2 border-solid border-red-500" value={{$property->address}}>
-                                    @error("address")
-                                        <x-errors>{{ $message }}</x-errors>
-                                    @enderror
+
                                 </div>
                             </div>
 
@@ -156,18 +152,6 @@
                                     <input type="text" id="price_per_night" name="price_per_night" class="border-2 border-solid border-red-500 float justify-center float-right" value={{$property->price_per_night}}>
                                     <label for="price_per_night" class="text-xl float justify-center float-right">Price Per Night: £</label>
                                     @error("price_per_night")
-                                        <x-errors>{{ $message }}</x-errors>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row row-space mb-3">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="number_of_bedrooms" class="text-xl">Number of Bedrooms: </label>
-                                    <input id="number_of_bedrooms" name="number_of_bedrooms" type="number" class="border-2 border-solid border-red-500" value={{$property->number_of_bedrooms}}>
-                                    @error("number_of_bedrooms")
                                         <x-errors>{{ $message }}</x-errors>
                                     @enderror
                                 </div>

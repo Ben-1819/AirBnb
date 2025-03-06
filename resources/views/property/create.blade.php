@@ -11,16 +11,6 @@
                         <div class="row row-space mb-3">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="location" class="text-xl">Location: </label>
-                                    <input id="location" name="location" type="text" value="{{old("location")}}" class="border-2 border-solid border-red-500">
-                                    @error("location")
-                                        <x-errors>{{ $message }}</x-errors>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-6">
-                                <div class="form-group">
                                     <input type="number" name="number_of_bathrooms" id="number_of_bathrooms" value="{{old("number_of_bathrooms")}}" class="border-2 border-solid border-red-500 float justify-center float-right">
                                     <label for="number_of_bathrooms" class="text-xl float justify-center float-right">Number of Bathrooms: </label>
                                     @error("number_of_bathrooms")
@@ -33,9 +23,9 @@
                         <div class="row row-space mb-3">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="address" class="text-xl">Address: </label>
-                                    <input id="address" name="address" type="text" value="{{old("address")}}" class="border-2 border-solid border-red-500">
-                                    @error("address")
+                                    <label for="number_of_bedrooms" class="text-xl">Number of Bedrooms: </label>
+                                    <input id="number_of_bedrooms" name="number_of_bedrooms" type="number" value="{{old("number_of_bedrooms")}}" class="border-2 border-solid border-red-500">
+                                    @error("number_of_bedrooms")
                                         <x-errors>{{ $message }}</x-errors>
                                     @enderror
                                 </div>
@@ -163,18 +153,14 @@
                         <div class="row row-space mb-3">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="number_of_bedrooms" class="text-xl">Number of Bedrooms: </label>
-                                    <input id="number_of_bedrooms" name="number_of_bedrooms" type="number" value="{{old("number_of_bedrooms")}}" class="border-2 border-solid border-red-500">
-                                    @error("number_of_bedrooms")
-                                        <x-errors>{{ $message }}</x-errors>
-                                    @enderror
+
                                 </div>
                             </div>
 
                         </div>
 
                         <div class="pt-5 flex items-center justify-center">
-                            <button class="border-2 border-solid border-red-500">Continue to to select amenities</button>
+                            <button class="border-2 border-solid border-red-500">Continue to to location entry</button>
                         </div>
                     </form>
                 </div>

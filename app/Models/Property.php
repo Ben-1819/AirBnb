@@ -8,8 +8,6 @@ class Property extends Model
 {
     protected $fillable = [
         "owner_id",
-        "location",
-        "address",
         "main_category",
         "sub_category1",
         "sub_category2",

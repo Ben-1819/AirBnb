@@ -39,8 +39,6 @@ class UpdatePropertyRequest extends FormRequest
     {
         // Define the validation rules
         return [
-            "location" => ["required", "string", "max:25"],
-            "address" => ["required", "string", "max:100"],
             "main_category" => ["required", "string"],
             "sub_category1" => ["required", "string"],
             "sub_category2" => ["required", "string"],
@@ -59,12 +57,6 @@ class UpdatePropertyRequest extends FormRequest
     {
         // Create custom error messages
         $messages = [
-            "location.required" => "Location is a required field",
-            "location.string" => "Location must be of data type string",
-            "location.max" => "Location must not be more than 25 characters",
-            "address.required" => "Address is a required field",
-            "address.string" => "Address must be of data type string",
-            "address.max" => "Address must not be more than 100 characters",
             "main_category.required" => "Main category is a required field",
             "main_category.string" => "Main category must be of data type string",
             "sub_category1.required" => "Sub category 1 is a required field",

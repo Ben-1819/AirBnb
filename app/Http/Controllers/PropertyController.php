@@ -147,8 +147,6 @@ class PropertyController extends Controller
         $newProperty = [
             //"id" => $request->property_id,
             "owner_id" => $request->owner_id,
-            "location" => $request->location,
-            "address" => $request->address,
             "main_category" => $request->main_category,
             "sub_category1" => $request->sub_category1,
             "sub_category2" => $request->sub_category2,
@@ -167,8 +165,6 @@ class PropertyController extends Controller
         log::info("Record in properties table updated");
 
         log::info("Owner ID: {owner_id}", ["owner_id" => $request->owner_id]);
-        log::info("Location: {location}", ["location" => $request->location]);
-        log::info("Address: {address}", ["address" => $request->address]);
         log::info("Main Category: {main_category}", ["main_category" => $request->main_category]);
         log::info("Sub Category 1: {sub_category1}", ["sub_category1" => $request->sub_category1]);
         log::info("Sub Category 2: {sub_category2}", ["sub_category2" => $request->sub_category2]);
