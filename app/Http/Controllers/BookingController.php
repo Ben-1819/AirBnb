@@ -70,8 +70,7 @@ class BookingController extends Controller
 
         log::info("Get the total cost of the booking");
         $addBooking["booking_cost"] = strval((doubleval($amount_of_nights) * doubleval($property->price_per_night)) + (doubleval($property->price_per_pet) * doubleval($request->amount_of_pets)));
-        //(bcmul($property->price_per_pet, strval($request->amount_of_pets), 2)),
-        //(bcmul(strval($amount_of_nights), $property->price_per_night, 2)) + (bcmul($property->price_per_pet, strval($request->amount_of_pets), 2)),
+
         log::info("Create new booking");
         $booking = new Booking($addBooking);
         $booking->save();
