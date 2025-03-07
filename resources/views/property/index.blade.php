@@ -1,19 +1,16 @@
-<?php
-use App\Models\Location;
-$uniqueLocations = Location::select("state")->distinct()->get();
-?>
+@php
+    use App\Models\Location;
+@endphp
 <!DOCTYPE html>
     <x-app-layout>
         <div>
-            <p>Filter by state</p>
-            <form action="{{route("filter.showCountry")}}" method="get">
+            <form action="{{route("filter.country")}}" method="get">
                 @csrf
-                <select id="filterBox" onchange="this.form.submit()">
-
-                    @foreach($uniqueLocations as $location)
-                    <option value={{$location->state}}>{{$location->state}}</option>
-                    @endforeach
-                </select>
+                <button class="border-2 border-solid border-red-500">Filter by state</button>
+            </form>
+            <form action="{{route("filter.city")}}" method="get">
+                @csrf
+                <button class="border-2 border-solid border-red-500">Filter by city</button>
             </form>
         </div>
         <div>

@@ -72,8 +72,8 @@ Route::name("location.")->prefix("/location")->controller(LocationController::cl
 });
 
 Route::name("filter.")->prefix("/filter")->controller(PropertyFiltering::class)->group(function(){
-    Route::get("", "filterCountry")->name("showCountry");
-    Route::get("/country", "filterByCountry")->name("byCountry");
+    Route::get("/state", "filterCountry")->name("country");
+    Route::get("/city", "filterCity")->name("city");
 });
 
 require __DIR__.'/auth.php';

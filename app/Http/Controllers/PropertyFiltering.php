@@ -31,16 +31,23 @@ class PropertyFiltering extends Controller
         log::info("Return the filter by country view");
         return view("filter.state", compact("states", "locations"));
     }
-    public function filterByCountry(Request $request){
-        log::info("Get all unique states from the locations table");
-        $uniqueLocations = Location::select("state")
+    public function filterCity(Request $request){
+        log::info("Get all unique cities from the locations table");
+        $cities = Location::select("city")
             ->distinct()
-            ->pluck("state");
+            ->get()
+            ->map(function($location){
+                $location->city = trim($location->city);
+                return $location->city;
+            });
+
+            log::info("Return all records from the Location table where the city matches the chosen one");
+            $locations = Location::when($request->city, function($query) use($request){
+                return $query->whereRaw("TRIM(city) = ?", [trim($request->city)]);
+            })->get();
 
 
-
-
-        return view("filter.state", compact("locations", "uniqueLocations"));
+        return view("filter.city", compact("cities", "locations"));
     }
 
 }
