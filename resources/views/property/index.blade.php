@@ -1,8 +1,21 @@
 <?php
 use App\Models\Location;
+$uniqueLocations = Location::select("state")->distinct()->get();
 ?>
 <!DOCTYPE html>
     <x-app-layout>
+        <div>
+            <p>Filter by state</p>
+            <form action="{{route("filter.showCountry")}}" method="get">
+                @csrf
+                <select id="filterBox" onchange="this.form.submit()">
+
+                    @foreach($uniqueLocations as $location)
+                    <option value={{$location->state}}>{{$location->state}}</option>
+                    @endforeach
+                </select>
+            </form>
+        </div>
         <div>
             <h1 class="text-2xl flex justify-center">All Properties</h1>
         </div>

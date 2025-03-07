@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\AmenitiesController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PropertyFiltering;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
@@ -68,6 +69,11 @@ Route::name("review.")->prefix("/review")->controller(ReviewController::class)->
 Route::name("location.")->prefix("/location")->controller(LocationController::class)->group(function(){
     Route::get("", "create")->name("create");
     Route::post("", "store")->name("store");
+});
+
+Route::name("filter.")->prefix("/filter")->controller(PropertyFiltering::class)->group(function(){
+    Route::get("", "filterCountry")->name("showCountry");
+    Route::get("/country", "filterByCountry")->name("byCountry");
 });
 
 require __DIR__.'/auth.php';

@@ -10,3 +10,43 @@
     margin-top: 25px;
     margin-left: 500px;
 }
+
+.property-container {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+.notes {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+.property {
+  background-color: white;
+  border-radius: 8px;
+  width: 280px;
+  margin: 0 10px 20px;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s;
+  cursor: pointer;
+  text-decoration: none;
+  color: #1e1e1e
+}
+
+.property .property-body {
+    outline: 0;
+    border:black;
+    font-family: 'Caveat', cursive;
+    font-size: 24px;
+    padding: 10px 16px 16px;
+}
+
+.note-buttons {
+    text-align: right;
+    padding: 10px;
+    display: flex;
+    gap: 5px;
+    justify-content: end;
+    border: solid;
+}
