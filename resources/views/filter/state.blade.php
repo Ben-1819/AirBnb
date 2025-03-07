@@ -3,7 +3,7 @@
 @endphp
 <x-app-layout>
     <div>
-        <form action="{{route("filter.showCountry")}}" method="get">
+        <form action="{{route("filter.country")}}" method="get">
             @csrf
             <select name="state" id="filterBox" onchange="this.form.submit()">
                 <option value="">Select State</option>
