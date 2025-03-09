@@ -15,6 +15,7 @@
         <script id="search-js" defer="" src="https://api.mapbox.com/search-js/v1.0.0/web.js"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @vite(['resources/js/visibleAmenities.js', 'resources/js/petsValues.js'])
+        @vite(['resources/js/bookingPets.js'])
         <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     </head>
     <body class="font-sans antialiased" >

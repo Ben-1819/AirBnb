@@ -3,7 +3,8 @@ use App\Models\User;
 ?>
 <!DOCTYPE html>
 <x-app-layout>
-
+    <input type="hidden" id="max_pets" value={{$property->max_pets}}>
+    <input type="hidden" id="max_guests" value={{$property->max_guests}}>
     <div class="container mt-5">
         <div class="row">
             <div class="col-xl-8 m-auto">
