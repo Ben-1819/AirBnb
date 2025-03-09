@@ -17,49 +17,33 @@
             <h1 class="text-2xl flex justify-center">All Properties</h1>
         </div>
 
-        <div>
-            <table class="border-2 border-solid border-red-500 justify-center ml-20 pt-20">
-                <thead>
-                    <tr>
-                        <th>Property Id</th>
-                        <th>Property Country</th>
-                        <th>Property City</th>
-                        <th>Max Guests</th>
-                        <th>Bedrooms</th>
-                        <th>Bathrooms</th>
-                        <th>View</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if(count($all_properties) > 0)
-                        @foreach($all_properties as $property)
-                            <tr>
-                                <?php
-                                $location = Location::where("property_id", $property->id)->first();
-                                ?>
-                                <td>{{$property->id}}</td>
-                                <td>{{$location->state}}</td>
-                                <td>{{$location->city}}</td>
-                                <td>{{$property->max_guests}}</td>
-                                <td>{{$property->number_of_bedrooms}}</td>
-                                <td>{{$property->number_of_bathrooms}}</td>
-                                <td>
-                                    <form action="{{route("property.show", $property->id)}}" method="get">
-                                        @csrf
-                                        <button class="border-2 border-solid border-red-500">
-                                            View
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="8">You have no properties</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+        @if(count($all_properties) > 0)
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 place-items-center">
+            <!-- Property Card -->
+            @foreach($all_properties as $property)
+            <?php
+                $location = Location::where("property_id", $property->id)->first();
+            ?>
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden border-2 border-solid border-red-500">
+                <div class="p-4">
+                    <h3 class="text-xl font-semibold text-gray-800">{{$property->main_category}}</h3>
+                    <p class="text-gray-600 text-sm mt-2">{{$property->description}}</p>
+                    <p class="text-grey-600 text-sm mt-2">{{$location->city}}</p>
+                    <div class="flex justify-between items-center mt-4">
+                        <span class="text-lg font-bold text-gray-900">{{$property->price_per_night}}</span>
+                        <form action="{{route("property.show", $property->id)}}" method="get">
+                            @csrf
+                            <button>View property details</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @endforeach
         </div>
+        @else
+        <div>
+            <h1 class="text-2xl flex-justify-center">No Properties</h1>
+        </div>
+        @endif
     </x-app-layout>
 </html>
