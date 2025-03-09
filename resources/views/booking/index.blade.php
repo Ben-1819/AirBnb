@@ -36,7 +36,7 @@ use App\Models\User;
                             <td>{{$owner->first_name}} {{$owner->last_name}}</td>
                             <td>{{$booking->booking_start}}</td>
                             <td>{{$booking->booking_end}}</td>
-                            <td>{{$booking->total_cost}}</td>
+                            <td>£{{$booking->booking_cost}}</td>
                             <td>
                                 <form action="{{route("booking.show", $booking->id)}}" method="get">
                                     @csrf
