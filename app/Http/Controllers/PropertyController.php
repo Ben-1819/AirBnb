@@ -20,7 +20,7 @@ class PropertyController extends Controller
     public function index()
     {
         log::info("Create variable all properties");
-        $all_properties = Property::all();
+        $all_properties = Property::paginate();
         log::info("Return view property index and pass in variable all_properties");
         return view("property.index", compact("all_properties"));
     }
