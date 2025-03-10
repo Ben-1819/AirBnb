@@ -80,7 +80,7 @@ class PropertyController extends Controller
         //$property = Property::latest();
         //$propertyID = $property->id;
 
-        return redirect()->route("location.create");
+        return redirect()->route("location.create", ["id" => $property->id]);
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Http\Controllers\AmenitiesController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PropertyFiltering;
 use App\Http\Controllers\ReviewController;
+use App\Http\Middleware\propertyOwner;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,20 +31,20 @@ Route::name("property.")->prefix("/property")->controller(PropertyController::cl
     Route::post("", "store")->name("store")->middleware(['auth', 'verified']);
     Route::get("/owned", "usersProperties")->name("owned")->middleware(['auth', 'verified']);
     Route::get("/{id}", "show")->name("show");
-    Route::get("/{id}/edit", "edit")->name("edit")->middleware(['auth', 'verified']);
-    Route::put("/{id}", "update")->name("update")->middleware(['auth', 'verified']);
-    Route::delete("/{id}", "destroy")->name("destroy")->middleware(['auth', 'verified']);
+    Route::get("/{id}/edit", "edit")->name("edit")->middleware(['auth', 'verified', "propertyOwner"]);
+    Route::put("/{id}", "update")->name("update")->middleware(['auth', 'verified', "propertyOwner"]);
+    Route::delete("/{id}", "destroy")->name("destroy")->middleware(['auth', 'verified', "propertyOwner"]);
     Route::patch("/{id}/addReview", "addReview")->name("addReview")->middleware(['auth', 'verified']);
 });
 
 Route::name("amenity.")->prefix("/amenity")->controller(AmenitiesController::class)->group(function(){
     Route::get("", "add")->name("add");
     Route::post("", "store")->name("store");
-    Route::get("/{id}/edit", "edit")->name("edit");
+    Route::get("/{id}/edit", "edit")->name("edit")->middleware("propertyOwner");
     Route::post("/edit", "update")->name("update");
-    Route::delete("/{id}", "destroyAll")->name("destroyAll");
-    Route::get("/{id}/list", "list")->name("list");
-    Route::delete("/{id}/delete", "delete")->name("destroy");
+    Route::delete("/{id}", "destroyAll")->name("destroyAll")->middleware("propertyOwner");
+    Route::get("/{id}/list", "list")->name("list")->middleware("propertyOwner");
+    Route::delete("/{id}/delete", "delete")->name("destroy")->middleware("propertyOwner");
 })->middleware(['auth', 'verified']);
 
 Route::name("booking.")->prefix("/booking")->controller(BookingController::class)->group(function(){
@@ -67,7 +68,7 @@ Route::name("review.")->prefix("/review")->controller(ReviewController::class)->
 });
 
 Route::name("location.")->prefix("/location")->controller(LocationController::class)->group(function(){
-    Route::get("", "create")->name("create");
+    Route::get("/{id}", "create")->name("create")->middleware("propertyOwner");
     Route::post("", "store")->name("store");
 });
 
