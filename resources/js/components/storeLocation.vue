@@ -18,44 +18,59 @@ async function sendToController(){
 </script>
 
 <template>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-xl-8 m-auto">
-                <div class="card-shadow">
-                    <form>
-                        <h3 class="title fw-bold border-bottom pb-3">Enter the address of your property</h3>
-                        <div class="card-body">
-                            <div class="row row-space mb-3">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <input class="input mb12 border-2 border-solid border-red-500" name="address" id="address" autocomplete="shipping address-line1" placeholder="Address" v-model="address">
-                                    </div>
-                                </div>
+    <div class="flex h-screen bg-gray-100">
+        <div class="m-auto">
+            <div class="mt-5 bg-white rounded-lg shadow">
+                <div class="flex">
+                    <div class="flex-1 py-5 pl-5 overflow-hidden">
+                        <h1 class="inline text-2xl font-semibold leading-none">Address:</h1>
+                    </div>
+                </div>
+                <div class="px-5 pb-5">
+                    <div class="flex">
+                        <div class="flex-grow">
+                            <div class="pt-5 flex items-center justify-center">
+                                <input class="input mb12 border-2 border-solid border-red-500" name="address" id="address" autocomplete="shipping address-line1" placeholder="Address" v-model="address">
                             </div>
-                            <div class="row row-space mb-3">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <input class="input mb12 border-2 border-solid border-red-500" name="city" id="city" autocomplete="shipping address-level2" placeholder="City" v-model="city">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row row-space mb-3">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <input class="input mb12 ml6 border-2 border-solid border-red-500" name="state" id="state" autocomplete="shipping address-level1" placeholder="State" v-model="state">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row row-space mb-3">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <input class="input mb12 ml6 border-2 border-solid border-red-500" name="postcode" id="postcode" autocomplete="shipping postal-code" placeholder="ZIP / Postcode" v-model="postcode">
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" @click="sendToController" class="border-2 border-solid border-red-500">Save location</button>
                         </div>
-                    </form>
+                    </div>
+                </div>
+                <div class="px-5 pb-5">
+                    <div class="flex">
+                        <div class="flex-grow">
+                            <div class="pt-5 flex items-center justify-center">
+                                <input class="input mb12 border-2 border-solid border-red-500" name="city" id="city" autocomplete="shipping address-level2" placeholder="City" v-model="city">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-5 pb-5">
+                    <div class="flex">
+                        <div class="flex-grow">
+                            <div class="pt-5 flex items-center justify-center">
+                                <input class="input mb12 ml6 border-2 border-solid border-red-500" name="state" id="state" autocomplete="shipping address-level1" placeholder="State" v-model="state">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-5 pb-5">
+                    <div class="flex">
+                        <div class="flex-grow">
+                            <div class="pt-5 flex items-center justify-center">
+                                <input class="input mb12 ml6 border-2 border-solid border-red-500" name="postcode" id="postcode" autocomplete="shipping postal-code" placeholder="ZIP / Postcode" v-model="postcode">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-3 mb-3">
+                <div class="px-5 pb-5">
+                    <div class="flex">
+                        <div class="flex-grow">
+                            <div class="pt-5 flex items-center justify-center">
+                                <button type="button" class="border-2 border-solid border-red-500" @click="sendToController">Save Location</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
