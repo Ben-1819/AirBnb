@@ -24,7 +24,7 @@ class reviewOwner
         if($review->reviewer_id == request()->user()->id){
             return $next($request);
         }
-        elseif(!$review || request()->user()->withoutRole("superadmin")){
+        elseif(request()->user()->hasRole("superadmin")){
             return $next($request);
         }
         else{

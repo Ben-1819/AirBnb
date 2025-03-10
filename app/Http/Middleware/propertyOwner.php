@@ -25,7 +25,7 @@ class propertyOwner
         if($property->owner_id == request()->user()->id){
             return $next($request);
         }
-        elseif(!$property || request()->user()->withoutRole("superadmin")){
+        elseif(request()->user()->hasRole("superadmin")){
             return $next($request);
         }
         else{
