@@ -53,6 +53,7 @@
                             </div>
                         </div>
                     </div>
+                    <hr class="mt-3 mb-3">
                     <div class="px-5 pb-5">
                         <div class="flex">
                             <div class="flex-grow">
