@@ -50,4 +50,22 @@ class PropertyFiltering extends Controller
         return view("filter.city", compact("cities", "locations"));
     }
 
+    public function filterCategory(Request $request){
+        log::info("Get all unique main categories from the properties table");
+        $mainCategories = Property::select("main_category")
+            ->distinct()
+            ->get()
+            ->map(function($property){
+                $property->main_category = trim($property->main_category);
+                return $property->main_category;
+            });
+
+        log::info("Return all records from the property table where the main category matches the chosen one");
+        $properties = Property::when($request->main_category, function($query) use($request){
+            return $query->whereRaw("TRIM(main_category) = ?", [trim($request->main_category)]);
+        })->get();
+
+        return view("filter.category", compact("mainCategories", "properties"));
+    }
+
 }

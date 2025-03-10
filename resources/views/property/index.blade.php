@@ -12,6 +12,10 @@
                 @csrf
                 <button class="border-2 border-solid border-red-500">Filter by city</button>
             </form>
+            <form action="{{route("filter.category")}}" method="get">
+                @csrf
+                <button class="border-2 border-solid border-red-500">Filter by category</button>
+            </form>
         </div>
         <div>
             <h1 class="text-2xl flex justify-center">All Properties</h1>
