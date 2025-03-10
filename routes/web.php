@@ -62,9 +62,9 @@ Route::name("review.")->prefix("/review")->controller(ReviewController::class)->
     Route::get("/{property}/create", "create")->name("create");
     Route::post("", "store")->name("store");
     Route::get("/{id}", "show")->name("show");
-    Route::get("/{id}/edit", "edit")->name("edit");
+    Route::get("/{id}/edit", "edit")->name("edit")->middleware("reviewOwner");
     Route::put("/{id}", "update")->name("update");
-    Route::delete("/{id}", "destroy")->name("destroy");
+    Route::delete("/{id}", "destroy")->name("destroy")->middleware("reviewOwner");
 });
 
 Route::name("location.")->prefix("/location")->controller(LocationController::class)->group(function(){
