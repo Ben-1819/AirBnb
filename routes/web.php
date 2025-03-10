@@ -51,10 +51,10 @@ Route::name("booking.")->prefix("/booking")->controller(BookingController::class
     Route::get("", "index")->name("index");
     Route::get("/{id}/create", "create")->name("create");
     Route::post("", "store")->name("store");
-    Route::get("/{id}", "show")->name("show");
-    Route::get("/{id}/edit", "edit")->name("edit");
-    Route::put("/{id}", "update")->name("update");
-    Route::delete("/{id}", "destroy")->name("destroy");
+    Route::get("/{id}", "show")->name("show")->middleware("bookingOwner");
+    Route::get("/{id}/edit", "edit")->name("edit")->middleware("bookingOwner");
+    Route::put("/{id}", "update")->name("update")->middleware("bookingOwner");
+    Route::delete("/{id}", "destroy")->name("destroy")->middleware("bookingOwner");
 })->middleware(['auth', 'verified']);
 
 Route::name("review.")->prefix("/review")->controller(ReviewController::class)->group(function(){

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use PhpParser\Node\Stmt\TraitUseAdaptation\Alias;
 use App\Http\Middleware\propertyOwner;
 use App\Http\Middleware\reviewOwner;
+use App\Http\Middleware\bookingOwner;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -20,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             "propertyOwner" => propertyOwner::class,
             "reviewOwner" => reviewOwner::class,
+            "bookingOwner" => bookingOwner::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
